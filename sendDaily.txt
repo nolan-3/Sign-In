@@ -1,0 +1,20 @@
+Windows Scheduler: https://datatofish.com/python-script-windows-scheduler/#:~:text=Double%2Dclick%20on%20the%20Task,Python%20script%20daily%20at%206am.
+
+I personally used pythonAnywhere before and it seemed quite convenient
+pythonAnywhere: https://www.geeksforgeeks.org/schedule-a-python-script-on-pythonanywhere/?ref=rp
+
+Mac Crontab: https://plainenglish.io/blog/auto-schedule-python-scripts-on-mac-37adac5db520
+
+Could also use gmail API
+
+Internal timer is the optimal most contained solution, however might have the most chance to mess up
+(if it ever goes off then the whole system is messed up)
+
+Running it on local host is a bit questionable, but doable
+Javascript + Python Kiosk: https://dev.to/ftrias/simple-kiosk-framework-in-python-2ane
+
+
+Hiding Password:
+
+More manual: https://medium.com/geekculture/how-to-hide-passwords-and-secret-keys-in-your-python-scripts-a8904d5560ec#72b6 
+Keyring: https://theautomatic.net/2020/04/28/how-to-hide-a-password-in-a-python-script/
