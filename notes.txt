@@ -1,3 +1,5 @@
+Send an email without an email account
+
 Daily Automation:
 
 Windows Scheduler: https://datatofish.com/python-script-windows-scheduler/#:~:text=Double%2Dclick%20on%20the%20Task,Python%20script%20daily%20at%206am.
@@ -24,3 +26,8 @@ More manual: https://medium.com/geekculture/how-to-hide-passwords-and-secret-key
 pip install python-decouple
 Keyring: https://theautomatic.net/2020/04/28/how-to-hide-a-password-in-a-python-script/
 Google app password
+
+TODO:
+setup spam email 
+pop up confirmation
+TESTING

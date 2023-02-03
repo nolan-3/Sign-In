@@ -8,20 +8,14 @@
 </head>
 <body>
     
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>Symbol</th>
-            <th>Shares bought</th>
-            <th>Price</th>
-            <th>Date and Time</th>
-        </tr>
-    {% for row in data %}
-    <tr>
-    <td>{{ row["symbol"] }}</td>
-    </tr>
-    {% endfor %}
-    </table>
-    {% endblock %}
+    <form type="submit" method="post" action="/">
+        {%for i in range(0, len)%}
+  
+            {{ data[i] }}<input type="radio" name="checked" value="{{ data[i] }}"><br>
+        <!-- {{ row }} <input type="checkbox" name="checked"></input> -->
+        {% endfor %}
+        <input type="submit">
+    </form>
 
 </body>
 </html>
