@@ -6,21 +6,9 @@ import threading
 import datetime
 import time
 import atexit
-
 from apscheduler.schedulers.background import BackgroundScheduler
+from getStudents import getStudents
 
-
-def print_date_time():
-    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
-
-
-scheduler = BackgroundScheduler()
-#scheduler.add_job(func=print_date_time, trigger="interval", seconds=1)
-scheduler.add_job(func=print_date_time, trigger='cron', hour= 19, minute= '*')
-scheduler.start()
-
-# Shut down the scheduler when exiting the app
-atexit.register(lambda: scheduler.shutdown())
 
 app = Flask(__name__)
 
@@ -31,35 +19,58 @@ class students:
 
 daily = students()
 
-# get data from free period list
-data = ["TEST","TEST2", "TEST3","TEST4", "TEST5", "TEST6"]
-
-
-def end():
-    data = students.signedIn
-    print(data)
-#7200 seconds in 2 hours
-
-
-@app.route('/', methods = ["GET", "POST"])
-def home():
-    if request.method == "GET":
-        #check if time is after 9:30 not necessary?
-        return render_template("index.html", len = len(data), data = data )
-    elif request.method == "POST":
-        #check if time is after 9:30
-        checked = request.form.get("checked")
-        daily.signedIn.append(checked)
-        data.remove(checked)
-        return render_template("index.html", len = len(data), data = data)
-        
-def timeFunction():
+def open():
+    #MAKE THIS DYNAMIC
+    #MODULO IS INVOLVED, FIGURE OUT HOW
+    #freePeriod = "B"
+    
+    #tudents = getStudents(freePeriod)
+    #active(students)
+    return testing()
     #turn on at 7:30
     #send an email
     #close at 9:30
     #loop
-
+def close():
+    students = students.signedIn
+    print(students)
     return render_template("useless.html")
+    
+
+def print_date_time():
+    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+
+
+@app.route('/', methods = ["GET", "POST"])
+def home():
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(func=open, trigger="interval", seconds=1)
+        #scheduler.add_job(func=print_date_time, trigger='cron', hour= 19, minute= '*')
+        scheduler.start()
+
+        # Shut down the scheduler when exiting the app
+        #HMM DO I WANT THIS?
+        atexit.register(lambda: scheduler.shutdown())
+        return render_template("index.html", len = 0, students = ['inactive'] )
+        
+@app.route('/active', methods = ["GET","POST"])
+def active(students=["test"]):
+    if request.method == "GET":
+        #check if time is after 9:30 not necessary?
+        return render_template("index.html", len = len(students), students = students )
+    elif request.method == "POST":
+        #check if time is after 9:30
+        checked = request.form.get("checked")
+        daily.signedIn.append(checked)
+        students.remove(checked)
+        return render_template("index.html", len = len(students), students = students)
+
+@app.route('/testing',)
+def testing():
+        with app.app_context:
+            print("testing runs")
+            render_template("test.html")
+            return app
 
 if __name__ == '__main__':
         app.run(debug=True, port = 8000)
