@@ -1,5 +1,5 @@
 import csv
-
+# Returns the list of students who have the given free period first
 def getStudents(period):
     students = []
     nameIndex = 1
