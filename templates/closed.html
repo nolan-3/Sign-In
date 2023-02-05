@@ -8,5 +8,25 @@
 </head>
 <body>
 If you haven't been able to sign in yet go to the office.
+<form type="submit" method="post" action="/">
+
+<input type="submit", value="If you think check in should be open press this button">
+</form>
 </body>
 </html>
+
+<script>
+    //open and close at 7 to avoid appearance issues
+    //inelegant solution, but I think dealing with scheduler in python script would be difficult
+    //There is cooler syntax for lambda function, but it's too cool for me.
+    setInterval(function () { 
+        var date = new Date(); 
+        if (date.getHours() === 7 && date.getMinutes() === 0) 
+        { 
+            location.reload()
+        }
+        else if (date.getHours() === 9 && date.getMinutes() === 30)
+        {
+            location.reload()
+        } }, 60000); // Repeat every 60000 milliseconds (1 minute)
+</script>

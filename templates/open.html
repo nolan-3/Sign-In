@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <h1>Check the box next to your name and hit submit to check yourself in</h1>
     <form type="submit" method="post" action="/">
         {%for i in range(0, len)%}
-  
-            {{ students[i] }}<input type="radio" name="checked" value="{{ students[i] }}"><br>
+
+        {{ students[i] }}<input type="radio" name="checked" value="{{ students[i] }}"><br>
         <!-- {{ row }} <input type="checkbox" name="checked"></input> -->
         {% endfor %}
         <input type="submit">
     </form>
 
 </body>
+
 </html>
 
 <script>
-    function popUp(){
-        
-    }
-    
-    function reload(){
-        //If time is less than the interval after 6:00
-        //If time is less than the interval after 9:30
-        if(False){
-        location.reload()}
-    }
-    setInterval(reload, 6000)//60000
+    //open and close at 7 to avoid appearance issues
+    //inelegant solution, but I think dealing with scheduler in python script would be difficult
+    //There is cooler syntax for lambda function, but it's too cool for me.
+    setInterval(function () { 
+        var date = new Date(); 
+        if (date.getHours() === 7 && date.getMinutes() === 0) 
+        { 
+            location.reload()
+        }
+        else if (date.getHours() === 9 && date.getMinutes() === 30)
+        {
+            location.reload()
+        } }, 60000); // Repeat every 60000 milliseconds (1 minute)
 </script>

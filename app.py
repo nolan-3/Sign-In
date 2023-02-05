@@ -31,17 +31,16 @@ def close():
 def home():
     if request.method == "GET":
         #if checkTime() == True:
-        if True:
+        if checkTime():
             return render_template("open.html", len = len(info.students), students = info.students)
         else:
             return render_template("closed.html")
 
     elif request.method == "POST":
         #check if time is after 9:30
-        student = request.form.get("checked")
-        info.students.remove(student)
-        #if checkTime() == True:
-        if True:
+        if checkTime():
+            student = request.form.get("checked")
+            info.students.remove(student)
             return render_template("open.html", len = len(info.students), students = info.students )
         else:
             return render_template("closed.html")

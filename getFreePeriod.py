@@ -6,14 +6,14 @@ import math
 def daysOff(year, month, day):
     happyDays = 0
     # format [year,month,day]
-    daysOff = [[2022, 9, 26], [2022, 10, 5], [2022, 10, 21], [2022, 11, 14], [2022, 11, 23], [2022, 11, 24], [2022, 11, 25], [2022, 12, 19],
-               [2022, 12, 20], [2022, 12, 21], [2022, 12, 22], [2022, 12, 23], [
-                   2022, 12, 26], [2022, 12, 27], [2022, 12, 28], [2022, 12, 29], [2022, 12, 30],
-               [2023, 1, 2], [2023, 1, 16], [2023, 2, 17], [2023, 2, 20], [2023, 3, 17], [
-                   2023, 3, 24], [2023, 3, 27], [2023, 3, 28], [2023, 3, 29], [2023, 3, 30],
-               [2023, 3, 31], [2023, 4, 7], [2023, 5, 1], [2023, 5, 29]]
+    daysOff = [[2022, 9, 26], [2022, 10, 5], [2022, 10, 21], [2022, 11, 14], [2022, 11, 23], [2022, 11, 24],
+            [2022, 11, 25], [2022, 12, 19], [2022, 12, 20], [2022, 12, 21], [2022, 12, 22], [2022, 12, 23], 
+            [2022, 12, 26], [2022, 12, 27], [2022, 12, 28], [2022, 12, 29], [2022, 12, 30],
+            [2023, 1, 2], [2023, 1, 16], [2023, 2, 17], [2023, 2, 20], [2023, 3, 17], 
+            [2023, 3, 24], [2023, 3, 27], [2023, 3, 28], [2023, 3, 29], [2023, 3, 30],
+            [2023, 3, 31], [2023, 4, 7], [2023, 5, 1], [2023, 5, 29]]
 
-    # yes it is chronological but lets not rely on that
+    # Find how many days off we've had so far, yes it is chronological but lets not rely on that
     for i in range(0, len(daysOff)):
         if year > daysOff[i][0]:
             happyDays += 1
@@ -28,10 +28,8 @@ def daysOff(year, month, day):
 
 def dayOfWeek():
     dayOfWeek = time.strftime("%A")
+
     # switch case requires version 3.10 or newer, occidam serpentem
-
-    dayOfWeek = "Monday"  # TODO
-
     if dayOfWeek == "Monday":
         return 1
     elif dayOfWeek == "Tuesday":
@@ -42,7 +40,8 @@ def dayOfWeek():
         return 4
     elif dayOfWeek == "Friday":
         return 5
-
+    else:
+        return 0
 
 
 def getFreePeriod():
@@ -55,18 +54,15 @@ def getFreePeriod():
     firstSunday = date(2022, 9, 11)
     days = 3
 
-    # year = int(time.strftime("%Y"))
-    # month = time.strftime("%B")
-    # month = time.strptime(month,'%B').tm_mon
-    # day = int(time.strftime("%d"))
-    year = 2023
-    month = 2
-    day = 6
+    year = int(time.strftime("%Y"))
+    month = time.strftime("%B")
+    month = time.strptime(month, '%B').tm_mon
+    day = int(time.strftime("%d"))
     current = date(year, month, day)
 
     deltaT = current - firstSunday
-    deltaT = deltaT.days
-    fullWeeks = math.floor(deltaT/7)
+    deltaDays = deltaT.days
+    fullWeeks = math.floor(deltaDays/7)
     days += fullWeeks * 5
     days += dayOfWeek()
 

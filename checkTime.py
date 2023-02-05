@@ -1,28 +1,30 @@
 import time
 
-# determines whether the current time is in between 6:00 am and 9:30 am 
+
+# determines whether the current time is in between 7:00 am and 9:30 am
+
 def checkTime():
-    # times do NOT take into account AM/PM
-    openingHour = 6
+    # These times do NOT take into account AM/PM
+    openingHour = 7
     openingMinute = None
     closingHour = 9
     closingMinute = 30
-    # time.strftime("%A, %d. %B %Y %I:%M:%S %p")
-    #year = int(time.strftime("%Y"))
-    #month = time.strftime("%B")
-    #day = int(time.strftime("%d"))
+
     inTimeFrame = None
+    timeOfDay = time.strftime("%p")
     hour = int(time.strftime("%I"))
     minute = int(time.strftime("%M"))
-    timeOfDay = time.strftime("%p")
+
     if timeOfDay == "AM":
         if hour > openingHour:
-            if hour > closingHour:
-                inTimeFrame = False
-            elif hour < closingHour:
+            if hour < closingHour:
                 inTimeFrame = True
+            elif hour > closingHour:
+                inTimeFrame = False
             elif hour == closingHour and minute < closingMinute:
                 inTimeFrame = True
+            else:
+                inTimeFrame = False
         else:
             inTimeFrame = False
     else:
