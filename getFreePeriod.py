@@ -73,3 +73,4 @@ def getFreePeriod():
     index = schoolDays % 7
     freePeriod = pattern[index]
     return freePeriod
+

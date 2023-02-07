@@ -14,6 +14,7 @@ def checkTime():
     hour = int(time.strftime("%I")) 
     minute = int(time.strftime("%M"))
 
+
     # 2 and 3 are just used because in python True == 1 is true
     if timeOfDay == "AM":
         if hour > openingHour:

@@ -33,7 +33,6 @@ def home():
     check = checkTime()
     if request.method == "GET":
         if check == True:
-            print("runs")
             return render_template("open.html", len = len(daily.students), students = daily.students)
         elif check == False:
             return render_template("closed.html")
@@ -65,4 +64,4 @@ def home():
 
 
 if __name__ == '__main__':
-        app.run(debug=True, port = 8000)
+        app.run(debug=False, port = 8000)
