@@ -5,20 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <title>Document</title>
 </head>
 
 <body>
     <h1>Check the box next to your name and hit submit to check yourself in</h1>
-    <form type="submit" method="post" action="/">
+    <form method="post" action="/" id="OURform" onsubmit="return(validate());"> 
         {%for i in range(0, len)%}
 
         {{ students[i] }}<input type="radio" name="checked" value="{{ students[i] }}"><br>
         <!-- {{ row }} <input type="checkbox" name="checked"></input> -->
         {% endfor %}
-        <input type="submit">
+        <input class="btn btn-success" type="submit" value="submit" readonly> 
     </form>
-
 </body>
 
 </html>
@@ -37,4 +38,37 @@
         {
             location.reload()
         } }, 60000); // Repeat every 60000 milliseconds (1 minute)
+
+    //Second method is to make the "submit" button call validate onclick
+    //and have validate submit the form
+    //form.submit();
+
+    function validate(){
+        var radios = document.getElementsByTagName('input');
+        var value;
+        var message;
+        var confirmed;
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].type === 'radio' && radios[i].checked) {
+            // get value, set checked flag or do whatever you need to
+            value = radios[i].value;
+            }
+            }
+        if(value){
+        message = "In accordance with the Haverford School Honor Code do you confirm that you are " + value + "?"
+        }
+        else{
+            window.alert("you did not select your name")
+            return false
+        }
+        confirmed = window.confirm(message)
+
+        if(confirmed){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+        
 </script>

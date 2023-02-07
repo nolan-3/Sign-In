@@ -6,27 +6,30 @@ import time
 def checkTime():
     # These times do NOT take into account AM/PM
     openingHour = 7
-    openingMinute = None
+    openingMinute = 0
     closingHour = 9
     closingMinute = 30
 
-    inTimeFrame = None
-    timeOfDay = time.strftime("%p")
-    hour = int(time.strftime("%I"))
+    timeOfDay = time.strftime("%p") 
+    hour = int(time.strftime("%I")) 
     minute = int(time.strftime("%M"))
 
+    # 2 and 3 are just used because in python True == 1 is true
     if timeOfDay == "AM":
         if hour > openingHour:
             if hour < closingHour:
-                inTimeFrame = True
+                return True
             elif hour > closingHour:
-                inTimeFrame = False
+                return False
             elif hour == closingHour and minute < closingMinute:
-                inTimeFrame = True
+                return True
+            elif hour == closingHour and minute == closingMinute:
+                return 3
             else:
-                inTimeFrame = False
+                return False
+        elif hour == openingHour and minute == openingMinute:
+            return 2
         else:
-            inTimeFrame = False
+            return False
     else:
-        inTimeFrame = False
-    return inTimeFrame
+        return False

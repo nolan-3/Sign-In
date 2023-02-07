@@ -18,31 +18,49 @@ class info:
 daily = info()
 
 def open():
-    with app.app_context:
-        return url_for('/active')
+    daily.freePeriod = getFreePeriod()
+    daily.students = getStudents(daily.freePeriod)
+    daily.emailSent = False
 
-def close():
-    notSignedIn = info.students
+def close(): 
+    notSignedIn = daily.students
     send(notSignedIn)
-    return render_template("useless.html")
-    
+    daily.emailSent = True
+
 
 @app.route('/', methods = ["GET","POST"])
 def home():
+    check = checkTime()
     if request.method == "GET":
-        #if checkTime() == True:
-        if checkTime():
-            return render_template("open.html", len = len(info.students), students = info.students)
-        else:
+        if check == True:
+            print("runs")
+            return render_template("open.html", len = len(daily.students), students = daily.students)
+        elif check == False:
+            return render_template("closed.html")
+        elif check == 2:
+            open()
+            return render_template("open.html", len = len(daily.students), students = daily.students)
+        elif check == 3:
+            if daily.emailSent == False:
+                close()
+            close()
             return render_template("closed.html")
 
+
     elif request.method == "POST":
-        #check if time is after 9:30
-        if checkTime():
+        check = checkTime()
+        if check == True:
             student = request.form.get("checked")
-            info.students.remove(student)
-            return render_template("open.html", len = len(info.students), students = info.students )
-        else:
+            daily.students.remove(student)
+            return render_template("open.html", len = len(daily.students), students = daily.students)
+        elif check == False:
+            return render_template("closed.html")
+        elif check == 2:
+            open()
+            return render_template("open.html", len = len(daily.students), students = daily.students)
+        elif check == 3:
+            if daily.emailSent == False:
+                close()
             return render_template("closed.html")
 
 

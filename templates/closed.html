@@ -7,10 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-If you haven't been able to sign in yet go to the office.
-<form type="submit" method="post" action="/">
-
-<input type="submit", value="If you think check in should be open press this button">
+<form class="center" type="submit" method="post" action="/">
+    <div>
+        If you haven't been able to sign in yet go to the office.
+    </div>
+    <div class="pad">
+        <input type="submit", value="If you think check in should be open press this button">
+    </div>
 </form>
 </body>
 </html>
@@ -30,3 +33,17 @@ If you haven't been able to sign in yet go to the office.
             location.reload()
         } }, 60000); // Repeat every 60000 milliseconds (1 minute)
 </script>
+
+<style>
+    .center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+    .pad {
+        padding-top: 20px;
+    }
+</style>
