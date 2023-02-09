@@ -12,13 +12,19 @@
 
 <body>
     <h1>Check the box next to your name and hit submit to check yourself in</h1>
-    <form method="post" action="/" id="OURform" onsubmit="return(validate());"> 
-        {%for i in range(0, len)%}
+    <form method="post" action="/" id="OURform" onsubmit="return(validate());">
 
-        {{ students[i] }}<input type="radio" name="checked" value="{{ students[i] }}"><br>
-        <!-- {{ row }} <input type="checkbox" name="checked"></input> -->
-        {% endfor %}
-        <input class="btn btn-success" type="submit" value="submit" readonly> 
+        <label for="student">Choose your name: </label>
+        <select name="student" id="student">
+            <option></option>
+
+            {%for i in range(0, len)%}
+                <option value="{{ students[i] }}"> {{ students[i] }}</option>
+            {% endfor %}
+
+        </select>
+
+        <input class="btn btn-success" type="submit" value="submit" readonly>
     </form>
 </body>
 
@@ -28,47 +34,50 @@
     //open and close at 7 to avoid appearance issues
     //inelegant solution, but I think dealing with scheduler in python script would be difficult
     //There is cooler syntax for lambda function, but it's too cool for me.
-    setInterval(function () { 
-        var date = new Date(); 
-        if (date.getHours() === 7 && date.getMinutes() === 0) 
-        { 
+    setInterval(function () {
+        var date = new Date();
+        if (date.getHours() === 7 && date.getMinutes() === 0) {
             location.reload()
         }
-        else if (date.getHours() === 9 && date.getMinutes() === 30)
-        {
+        else if (date.getHours() === 9 && date.getMinutes() === 30) {
             location.reload()
-        } }, 60000); // Repeat every 60000 milliseconds (1 minute)
+        }
+    }, 60000); // Repeat every 60000 milliseconds (1 minute)
 
     //Second method is to make the "submit" button call validate onclick
     //and have validate submit the form
     //form.submit();
 
-    function validate(){
-        var radios = document.getElementsByTagName('input');
-        var value;
-        var message;
-        var confirmed;
-        for (var i = 0; i < radios.length; i++) {
-            if (radios[i].type === 'radio' && radios[i].checked) {
-            // get value, set checked flag or do whatever you need to
-            value = radios[i].value;
-            }
-            }
-        if(value){
-        message = "In accordance with the Haverford School Honor Code do you confirm that you are " + value + "?"
+    function validate() {
+        //get selected student
+        selectElement = document.querySelector('#student');
+        student = selectElement.options[selectElement.selectedIndex].value;
+
+        if (student) {
+            message = "In accordance with the Haverford School Honor Code do you confirm that you are " + student + "?"
         }
-        else{
+        else {
             window.alert("you did not select your name")
             return false
         }
         confirmed = window.confirm(message)
 
-        if(confirmed){
+        if (confirmed) {
             return true
         }
-        else{
+        else {
             return false
         }
     }
-        
+
 </script>
+
+<style>
+    body {
+    /*background-image: url( "{{ url_for('static', filename='img/background.jpg') }}");
+    background-image: url('haverford-logo.png');*/
+    background-image: url('/static/haverford-logo.png');
+
+    background-repeat: no-repeat;
+}
+    </style>
