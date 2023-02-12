@@ -11,21 +11,27 @@
 </head>
 
 <body>
-    <h1>Check the box next to your name and hit submit to check yourself in</h1>
-    <form method="post" action="/" id="OURform" onsubmit="return(validate());">
+    <div class="container">
+        <h1 style="text-align:center">Select your name from the dropdown and hit submit to check yourself in</h1>
+        <form method="post" action="/" id="OURform" onsubmit="return(validate());">
+            <select style="width: 300px; height: 50px" name="student" id="student">
+                <option></option>
 
-        <label for="student">Choose your name: </label>
-        <select name="student" id="student">
-            <option></option>
-
-            {%for i in range(0, len)%}
+                {%for i in range(0, len)%}
                 <option value="{{ students[i] }}"> {{ students[i] }}</option>
-            {% endfor %}
+                {% endfor %}
 
-        </select>
+            </select>
 
-        <input class="btn btn-success" type="submit" value="submit" readonly>
-    </form>
+            <input class="btn btn-success" type="submit" value="submit" readonly>
+        </form>
+        <!-- <img src="{{ url_for('static', filename='haverford-logo.png')}}"> -->
+        <br>
+        <img class="medium"
+            src="https://instructure-uploads.s3.amazonaws.com/account_23930000000000001/attachments/63765/THS-Seal-2c.png?AWSAccessKeyId=AKIAJFNFXH2V2O7RPCAA&Expires=1938411768&Signature=ewaYhupFt3fbG4TPx5CTf%2BhmY7A%3D&response-cache-control=Cache-Control%3Amax-age%3D473364000.0%2C%20public&response-expires=473364000.0">
+        <h2 style="text-align:center">Check-in is open from 7:00 - 9:30</h2>
+
+    </div>
 </body>
 
 </html>
@@ -73,11 +79,24 @@
 </script>
 
 <style>
-    body {
-    /*background-image: url( "{{ url_for('static', filename='img/background.jpg') }}");
-    background-image: url('haverford-logo.png');*/
-    background-image: url('/static/haverford-logo.png');
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 
-    background-repeat: no-repeat;
+    .medium {
+        width: 40%;
+        height: 40%;
+    }
+
+    html, body {margin: 0; width: 100vw; height: 100vh}
+
+body {
+  background: -webkit-linear-gradient(linear, left top, right bottom, color-stop(50%, Salmon), color-stop(50%, Khaki));
+  background: -webkit-linear-gradient(top left, Salmon 50%, Khaki 50%);
+  background: -o-linear-gradient(top left, Salmon 50%, Khaki 50%);
+  background: linear-gradient(to bottom right, Salmon 50%, Khaki 50%);
 }
-    </style>
+</style>

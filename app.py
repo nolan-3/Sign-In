@@ -7,7 +7,7 @@ from getFreePeriod import getFreePeriod
 from send import send
 
 
-app = Flask(__name__,static_url_path='',static_folder='/static',)
+app = Flask(__name__,static_url_path='',static_folder='static',)
 
 #PERHAPS WRITE TO A TEXT FILE
 class info:
@@ -38,9 +38,6 @@ def home():
         if True:
             #if daily.studentsGotten == True:
             return render_template("open.html", len = len(daily.students), students = daily.students)
-            #else:
-                #open() 
-                #return render_template("open.html", len = len(daily.students), students = daily.students)
         elif check == False:
             return render_template("closed.html")
             # not necessary
