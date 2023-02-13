@@ -12,7 +12,7 @@
 
 <body>
     <div class="container">
-        <h1 style="text-align:center">Select your name from the dropdown and hit submit to check yourself in</h1>
+        <h2 class="header" style="text-align:center">Select your name from the dropdown and hit submit to check yourself in</h2>
         <form method="post" action="/" id="OURform" onsubmit="return(validate());">
             <select style="width: 300px; height: 50px" name="student" id="student">
                 <option></option>
@@ -29,7 +29,7 @@
         <br>
         <img class="medium"
             src="https://instructure-uploads.s3.amazonaws.com/account_23930000000000001/attachments/63765/THS-Seal-2c.png?AWSAccessKeyId=AKIAJFNFXH2V2O7RPCAA&Expires=1938411768&Signature=ewaYhupFt3fbG4TPx5CTf%2BhmY7A%3D&response-cache-control=Cache-Control%3Amax-age%3D473364000.0%2C%20public&response-expires=473364000.0">
-        <h2 style="text-align:center">Check-in is open from 7:00 - 9:30</h2>
+        <h2 class="header" style="text-align:center">Check-in is open from 7:00 - 9:30</h2>
 
     </div>
 </body>
@@ -91,12 +91,26 @@
         height: 40%;
     }
 
-    html, body {margin: 0; width: 100vw; height: 100vh}
+    .header {
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.5;
+        color: #333;
+        font-weight: bold;
+        text-decoration: underline;
+        font-style: italic;
+    }
 
-body {
-  background: -webkit-linear-gradient(linear, left top, right bottom, color-stop(50%, Salmon), color-stop(50%, Khaki));
-  background: -webkit-linear-gradient(top left, Salmon 50%, Khaki 50%);
-  background: -o-linear-gradient(top left, Salmon 50%, Khaki 50%);
-  background: linear-gradient(to bottom right, Salmon 50%, Khaki 50%);
-}
+    html,
+    body {
+        margin: 0;
+        width: 100vw;
+        height: 100vh
+    }
+
+    body {
+        background: -webkit-linear-gradient(linear, left top, right bottom, color-stop(50%, Salmon), color-stop(50%, Khaki));
+        background: -webkit-linear-gradient(top left, Salmon 50%, Khaki 50%);
+        background: -o-linear-gradient(top left, Salmon 50%, Khaki 50%);
+        background: linear-gradient(to bottom right, Salmon 50%, Khaki 50%);
+    }
 </style>
