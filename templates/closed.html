@@ -1,49 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-<form class="center" type="submit" method="post" action="/">
-    <div>
-        If you haven't been able to sign in yet go to the office.
+    <div class="container center">
+        <div>
+            If you haven't been able to sign in yet go to the office.
+        </div>
+        <div class="pad">
+            <input type="submit" , onclick="location.reload()"
+                value="If you think check in should be open press this button">
+        </div>
     </div>
-    <div class="pad">
-        <input type="submit", value="If you think check in should be open press this button">
-    </div>
-</form>
 </body>
+
 </html>
 
 <script>
     //open and close at 7 to avoid appearance issues
     //inelegant solution, but I think dealing with scheduler in python script would be difficult
     //There is cooler syntax for lambda function, but it's too cool for me.
-    setInterval(function () { 
-        var date = new Date(); 
-        if (date.getHours() === 7 && date.getMinutes() === 0) 
-        { 
+    setInterval(function () {
+        var date = new Date();
+        if (date.getHours() === 7 && date.getMinutes() === 0) {
             location.reload()
         }
-        else if (date.getHours() === 9 && date.getMinutes() === 30)
-        {
+        else if (date.getHours() === 9 && date.getMinutes() === 30) {
             location.reload()
-        } }, 60000); // Repeat every 60000 milliseconds (1 minute)
+        }
+    }, 60000); // Repeat every 60000 milliseconds (1 minute)
 </script>
 
 <style>
     .center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 
     .pad {
         padding-top: 20px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    html,
+    body {
+        margin: 0;
+        width: 100vw;
+        height: 100vh
+    }
+    
+    body {
+        background: -webkit-linear-gradient(linear, left top, right bottom, color-stop(50%, Salmon), color-stop(50%, Khaki));
+        background: -webkit-linear-gradient(top left, Salmon 50%, Khaki 50%);
+        background: -o-linear-gradient(top left, Salmon 50%, Khaki 50%);
+        background: linear-gradient(to bottom right, Salmon 50%, Khaki 50%);
     }
 </style>

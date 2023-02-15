@@ -4,6 +4,9 @@ import time
 from getFreePeriod import getFreePeriod
 # given a list of students, sends that list to a specified email address.
 def send(students):
+     print(students)
+     if students == None:
+          return
      port = 465  # For SSL
      smtp_server = "smtp.gmail.com"
      sender_email = "haverfordsignin@gmail.com"  # Enter your address
