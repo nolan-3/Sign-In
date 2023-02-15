@@ -1,5 +1,7 @@
 import csv
 # Returns the list of students who have the given free period first
+
+
 def getStudents(period):
     students = []
     nameIndex = 1
@@ -7,7 +9,7 @@ def getStudents(period):
     with open("data.csv", 'r') as nameFile:
         # creating a csv reader object
         csvreader = csv.reader(nameFile)
-        
+
         # extracting field names through first row,
         fields = next(csvreader)
 
