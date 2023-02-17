@@ -5,11 +5,9 @@ import time
 from getFreePeriod import getFreePeriod
 # given a list of students, sends that list to a specified email address.
 
-
 def send(students):
-    print(students)
-    if students == None:
-        return
+    # if students == None:
+    #     return
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
     sender_email = "haverfordsignin@gmail.com"  # Enter your address
@@ -18,16 +16,16 @@ def send(students):
 
     content = ''
     for i in range(0, len(students)):
-        content += students[i] + '\n'
+        content += students[i][0] + '\n'
     freePeriod = getFreePeriod()
     month = time.strftime("%B")
-    month = time.strptime(month, '%B').tm_mon
     day = str(int(time.strftime("%d")))
+    dayOfWeek = time.strftime("%A")
 
     msg = EmailMessage()
     msg.set_content(content)
-    msg['Subject'] = "Sign In Attendance " + \
-        day + " " + " " + freePeriod + " period"
+    tagLine = "Students Who Didn't Sign In " + dayOfWeek + " " + month + " " + day + " " + freePeriod + " period"
+    msg['Subject'] = tagLine
     msg['From'] = sender_email
     msg['To'] = receiver_email
 
@@ -36,3 +34,4 @@ def send(students):
         server.login(sender_email, password)
         server.send_message(msg, from_addr=sender_email,
                             to_addrs=receiver_email)
+send(["nolan", "also nolan"])

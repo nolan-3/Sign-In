@@ -31,7 +31,6 @@ def daysOff(year, month, day):
 
 def dayOfWeek():
     dayOfWeek = time.strftime("%A")
-
     # switch case requires version 3.10 or newer, occidam serpentem
     if dayOfWeek == "Monday":
         return 1
@@ -76,3 +75,5 @@ def getFreePeriod():
     index = schoolDays % 7
     freePeriod = pattern[index]
     return freePeriod
+
+getFreePeriod()

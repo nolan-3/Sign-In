@@ -5,6 +5,7 @@ import csv
 def getStudents(period):
     students = []
     nameIndex = 1
+    gradeIndex = 2
     periodIndex = 3
     with open("data.csv", 'r') as nameFile:
         # creating a csv reader object
@@ -18,5 +19,6 @@ def getStudents(period):
             free = row[periodIndex]
             if free == period:
                 name = row[nameIndex]
-                students.append(name)
+                grade = row[gradeIndex]
+                students.append([name,grade])
     return students

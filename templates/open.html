@@ -19,7 +19,7 @@
                 <option></option>
 
                 {%for i in range(0, len)%}
-                <option value="{{ students[i] }}"> {{ students[i] }}</option>
+                <option value="{{ students[i][0] }}"> {{ students[i][0] }}</option>
                 {% endfor %}
 
             </select>
