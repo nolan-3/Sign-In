@@ -82,9 +82,10 @@ document.querySelector('#myForm').addEventListener('submit', function(e){
 }).then((result) => {
 
     if (result.isConfirmed) {
+        form = document.getElementById("myForm")
+        setTimeout(function(){ form.submit()},1000)
     Swal.fire('You\'re Checked In!', '', 'success')
     
-    setTimeout(function(){ document.getElementById("myForm").submit()},1000)
     
   }
   else {

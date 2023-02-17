@@ -43,8 +43,8 @@ def close():
 def home():
     # if the time is between 7:00 and 9:30 return active page, if time is outside 7:00 - 9:30 return the inactive page
     # store the students who login between 7:00 and 9:30 and send an email at 9:30 with the list
-    check = checkTime()
     if request.method == "GET":
+        check = checkTime()
         if check == True:
             if daily.studentsGotten == True:
                 return render_template("open.html", len=len(daily.students), students=daily.students)

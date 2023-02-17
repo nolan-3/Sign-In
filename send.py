@@ -34,4 +34,3 @@ def send(students):
         server.login(sender_email, password)
         server.send_message(msg, from_addr=sender_email,
                             to_addrs=receiver_email)
-send(["nolan", "also nolan"])
