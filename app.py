@@ -55,12 +55,14 @@ def home():
         elif check == False:
             return render_template("closed.html")
 
+    # TODO(braid): Remove special closing check
         elif check == 3:
             if daily.emailSent == False:
                 close()
             return render_template("closed.html")
 
     # There shouldn't be a post request that causes the form to open
+
     elif request.method == "POST":
         check = checkTime()
         if check == True:
@@ -75,6 +77,7 @@ def home():
         elif check == False:
             return render_template("closed.html")
 
+    # TODO(braid): Remove special closing check
         elif check == 3:
             if daily.emailSent == False:
                 close()
