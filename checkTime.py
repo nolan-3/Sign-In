@@ -13,9 +13,9 @@ CLOSE_TIME = time(9, 30)
 # open = True; closed = False; closing time = 3;
 # 3 is just used because in python True == 1 is true
 def checkTime():
-    time_now = TIMEZONE.localize(datetime.now()).time()
+    timeNow = TIMEZONE.localize(datetime.now()).time()
 
-    if time_now == CLOSE_TIME:
+    if timeNow == CLOSE_TIME:
         return 3
 
-    return (OPEN_TIME <= time_now) and (time_now <= CLOSE_TIME)
+    return (OPEN_TIME <= timeNow) and (timeNow <= CLOSE_TIME)
