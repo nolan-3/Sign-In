@@ -1,0 +1,3 @@
+# Project dependencies. See the README for details.
+flask
+apscheduler
