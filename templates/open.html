@@ -80,17 +80,14 @@ document.querySelector('#myForm').addEventListener('submit', function(e){
   cancelButtonText: 'No',
   confirmButtonText: 'Yes',
 }).then((result) => {
-
+        Swal.fire('You\'re Checked In!', '', 'success')
+}).then((result) => {
     if (result.isConfirmed) {
         form = document.getElementById("myForm")
-        setTimeout(function(){ form.submit()},1000)
-    Swal.fire('You\'re Checked In!', '', 'success')
-    
+        // setTimeout(function(){ form.submit()},1000)
+        form.submit()
     
   }
-  else {
-    return false
-  } 
 })
 })
 
