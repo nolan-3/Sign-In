@@ -1,39 +1,21 @@
-import time
+# Determines whether the current time is between 7:00am and 9:30am EST (inclusive).
 
+from datetime import datetime, time
+from pytz import timezone
 
-# determines whether the current time is in between 7:00 am and 9:30 am
+# All times are localized and interpreted in this timezone.
+TIMEZONE = timezone("US/Eastern")
 
+OPEN_TIME = time(7, 0)
+CLOSE_TIME = time(9, 30)
+
+# TODO(braid): Remove special close condition
+# open = True; closed = False; closing time = 3;
+# 3 is just used because in python True == 1 is true
 def checkTime():
+    timeNow = TIMEZONE.localize(datetime.now()).time()
 
-    # These times do NOT take into account AM/PM
-    openingHour = 7
-    openingMinute = 0
-    closingHour = 9
-    closingMinute = 30
+    if timeNow == CLOSE_TIME:
+        return 3
 
-    timeOfDay = time.strftime("%p")
-    hour = int(time.strftime("%I"))
-    minute = int(time.strftime("%M"))
-
-    # open = True; closed = False; closing time = 3;
-    # 3 is just used because in python True == 1 is true
-    if timeOfDay == "AM":
-        if hour > openingHour:
-            if hour < closingHour:
-                return True
-            elif hour > closingHour:
-                return False
-            elif hour == closingHour and minute < closingMinute:
-                return True
-            # closing time
-            elif hour == closingHour and minute == closingMinute:
-                return 3
-            else:
-                return False
-            # opening time
-        elif hour == openingHour and minute == openingMinute:
-            return True
-        else:
-            return False
-    else:
-        return False
+    return (OPEN_TIME <= timeNow) and (timeNow <= CLOSE_TIME)
