@@ -45,7 +45,7 @@ def home():
     # store the students who login between 7:00 and 9:30 and send an email at 9:30 with the list
     if request.method == "GET":
         check = checkTime()
-        if True:
+        if check == True:
             if daily.studentsGotten == True:
                 return render_template("open.html", len=len(daily.students), students=daily.students)
             else:
@@ -65,7 +65,7 @@ def home():
 
     elif request.method == "POST":
         check = checkTime()
-        if True:
+        if check == True:
             try:
                 student = request.form.get("student")
                 daily.students.remove(student)
