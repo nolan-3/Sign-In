@@ -38,49 +38,42 @@ def close():
     daily.emailSent = True
     daily.studentsGotten = False
 
+# Attempt to register a student
+def register(student):
+    if checkTime() != True:
+        return False
+
+    try:
+        daily.students.remove(student)
+        return True
+    except:
+        return False
+
 
 @app.route('/', methods=["GET", "POST"])
 def home():
+    # If this is a form submission, attempt to register the student
+    if request.method == "POST":
+        register(request.form["student"])
+
+    # Render a response page
     # if the time is between 7:00 and 9:30 return active page, if time is outside 7:00 - 9:30 return the inactive page
     # store the students who login between 7:00 and 9:30 and send an email at 9:30 with the list
-    if request.method == "GET":
-        check = checkTime()
-        if check == True:
-            if daily.studentsGotten == True:
-                return render_template("open.html", students=daily.students)
-            else:
-                open()
-                return render_template("open.html", students=daily.students)
-
-        elif check == False:
-            return render_template("closed.html")
-
-        elif check == 3:
-            if daily.emailSent == False:
-                close()
-            return render_template("closed.html")
-
-    # There shouldn't be a post request that causes the form to open
-
-    elif request.method == "POST":
-        check = checkTime()
-        if check == True:
-            try:
-                student = request.form.get("student")
-                # TODO: What we want to do is remove the student with the name (or name and grade?) matchin the form
-                daily.students.remove(student)
-            except:
-                None
-
+    check = checkTime()
+    if check == True:
+        if daily.studentsGotten == True:
+            return render_template("open.html", students=daily.students)
+        else:
+            open()
             return render_template("open.html", students=daily.students)
 
-        elif check == False:
-            return render_template("closed.html")
+    elif check == False:
+        return render_template("closed.html")
 
-        elif check == 3:
-            if daily.emailSent == False:
-                close()
-            return render_template("closed.html")
+    elif check == 3:
+        if daily.emailSent == False:
+            close()
+        return render_template("closed.html")
 
 
 if __name__ == '__main__':
