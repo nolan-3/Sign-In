@@ -15,8 +15,8 @@ def send(students):
     password = "xndbajmzcwgalbwo"
 
     content = ''
-    for i in range(0, len(students)):
-        content += students[i][0] + '\n'
+    for student in students:
+        content += student.name + '\n'
     freePeriod = getFreePeriod()
     month = time.strftime("%B")
     day = str(int(time.strftime("%d")))

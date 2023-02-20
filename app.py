@@ -47,15 +47,14 @@ def home():
         check = checkTime()
         if check == True:
             if daily.studentsGotten == True:
-                return render_template("open.html", len=len(daily.students), students=daily.students)
+                return render_template("open.html", students=daily.students)
             else:
                 open()
-                return render_template("open.html", len=len(daily.students), students=daily.students)
+                return render_template("open.html", students=daily.students)
 
         elif check == False:
             return render_template("closed.html")
 
-    # TODO(braid): Remove special closing check
         elif check == 3:
             if daily.emailSent == False:
                 close()
@@ -68,16 +67,16 @@ def home():
         if check == True:
             try:
                 student = request.form.get("student")
+                # TODO: What we want to do is remove the student with the name (or name and grade?) matchin the form
                 daily.students.remove(student)
             except:
                 None
 
-            return render_template("open.html", len=len(daily.students), students=daily.students)
+            return render_template("open.html", students=daily.students)
 
         elif check == False:
             return render_template("closed.html")
 
-    # TODO(braid): Remove special closing check
         elif check == 3:
             if daily.emailSent == False:
                 close()
