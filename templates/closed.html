@@ -1,73 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <title>Form Closed</title>
+
 </head>
-
 <body>
-    <div class="container center">
-        <div>
-            If you haven't been able to sign in yet go to the office.
-        </div>
-        <div class="pad">
-            <input type="submit" , onclick="location.reload()"
-                value="If you think check in should be open press this button">
-        </div>
-    </div>
+  <div class="container">
+    <h1>Form Closed</h1>
+    <p>We're sorry, but the form is currently closed. Please check back later.</p>
+    <a href="#" class="btn" onclick="location.reload()">Go Back</a>
+  </div>
 </body>
-
 </html>
 
-<script>
-    //open and close at 7 to avoid appearance issues
-    //inelegant solution, but I think dealing with scheduler in python script would be difficult
-    //There is cooler syntax for lambda function, but it's too cool for me.
-    setInterval(function () {
-        var date = new Date();
-        if (date.getHours() === 7 && date.getMinutes() === 0) {
-            location.reload()
-        }
-        else if (date.getHours() === 9 && date.getMinutes() === 30) {
-            location.reload()
-        }
-    }, 60000); // Repeat every 60000 milliseconds (1 minute)
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-    .center {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+  body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 
-    .pad {
-        padding-top: 20px;
-    }
+  .container {
+    max-width: 800px;
+    padding: 50px 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    background-color: #fff;
+  }
 
+  h1 {
+    font-size: 3em;
+    color: #006699;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  p {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #006699;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .btn:hover {
+    background-color: #005580;
+  }
+
+  /* Additional styles for onclick effects */
+  .btn:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
+  .btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 102, 153, 0.4);
+  }
+
+  /* Media queries for responsive design */
+  @media (max-width: 768px) {
     .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
+      max-width: 90%;
     }
+  }
 
-    html,
-    body {
-        margin: 0;
-        width: 100vw;
-        height: 100vh
-    }
-    
-    body {
-        background: -webkit-linear-gradient(linear, left top, right bottom, color-stop(50%, Salmon), color-stop(50%, Khaki));
-        background: -webkit-linear-gradient(top left, Salmon 50%, Khaki 50%);
-        background: -o-linear-gradient(top left, Salmon 50%, Khaki 50%);
-        background: linear-gradient(to bottom right, Salmon 50%, Khaki 50%);
-    }
+  body {
+      background: -webkit-linear-gradient(linear, left top, right bottom, color-stop(50%, Salmon), color-stop(50%, Khaki));
+      background: -webkit-linear-gradient(top left, Salmon 50%, Khaki 50%);
+      background: -o-linear-gradient(top left, Salmon 50%, Khaki 50%);
+      background: linear-gradient(to bottom right, Salmon 50%, Khaki 50%);
+  }
 </style>
