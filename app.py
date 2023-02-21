@@ -1,19 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from apscheduler.schedulers.background import BackgroundScheduler
 from getStudents import getStudents
 from checkTime import checkTime
 from getFreePeriod import getFreePeriod
 from send import send
-from threading import Timer
+import atexit
 
 
 app = Flask(__name__, static_url_path='', static_folder='static',)
 
-# PERHAPS WRITE TO A TEXT FILE
 
 # store the data of each day in an object
-
-
 class info:
     freePeriod = getFreePeriod()
     students = getStudents(freePeriod)
@@ -21,9 +18,12 @@ class info:
     emailSent = False
     studentsGotten = True
 
-
 daily = info()
 
+
+# Shut down the scheduler when exiting the app
+#HMM DO I WANT THIS?
+atexit.register(lambda: scheduler.shutdown())
 
 def open():
     daily.freePeriod = getFreePeriod()
@@ -33,10 +33,10 @@ def open():
 
 
 def close():
-    notSignedIn = daily.students
-    send(notSignedIn)
+    send(daily.students)
     daily.emailSent = True
     daily.studentsGotten = False
+    print("CLOSE RUNS!")
 
 # Attempt to register a student
 def register(student):
@@ -48,6 +48,12 @@ def register(student):
         return True
     except:
         return False
+    
+
+#schedule the close function to run at 9:30
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=close, trigger='cron', hour = 18, second = '*')
+scheduler.start()
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -56,7 +62,6 @@ def home():
     if request.method == "POST":
         register(request.form["student"])
 
-    # Render a response page
     # if the time is between 7:00 and 9:30 return active page, if time is outside 7:00 - 9:30 return the inactive page
     # store the students who login between 7:00 and 9:30 and send an email at 9:30 with the list
     check = checkTime()
@@ -64,17 +69,12 @@ def home():
         if daily.studentsGotten == True:
             names = [name for name in daily.students if daily.students[name].signedIn == False]
             return render_template("open.html", names=names)
+        #only runs if the program is running for multiple days straight, open is called initially at the start of the program
         else:
             open()
-            
             return render_template("open.html", names=names)
 
     elif check == False:
-        return render_template("closed.html")
-
-    elif check == 3:
-        if daily.emailSent == False:
-            close()
         return render_template("closed.html")
 
 

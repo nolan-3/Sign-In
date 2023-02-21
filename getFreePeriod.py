@@ -7,14 +7,11 @@ def daysOff(year, month, day):
     happyDays = 0
     # format [year,month,day]
     daysOff = [[2022, 9, 26], [2022, 10, 5], [2022, 10, 21], [2022, 11, 14], [2022, 11, 23], [2022, 11, 24],
-               [2022, 11, 25], [2022, 12, 19], [2022, 12, 20], [
-                   2022, 12, 21], [2022, 12, 22], [2022, 12, 23],
-               [2022, 12, 26], [2022, 12, 27], [2022, 12, 28], [
-        2022, 12, 29], [2022, 12, 30],
-        [2023, 1, 2], [2023, 1, 16], [2023, 2, 17], [2023, 2, 20], [2023, 3, 17],
-        [2023, 3, 24], [2023, 3, 27], [2023, 3, 28], [
-            2023, 3, 29], [2023, 3, 30],
-        [2023, 3, 31], [2023, 4, 7], [2023, 5, 1], [2023, 5, 29]]
+               [2022, 11, 25], [2022, 12, 19], [2022, 12, 20], [2022, 12, 21], [2022, 12, 22], [2022, 12, 23],
+               [2022, 12, 26], [2022, 12, 27], [2022, 12, 28], [2022, 12, 29], [2022, 12, 30], [2023, 1, 2], 
+               [2023, 1, 16], [2023, 2, 17], [2023, 2, 20], [2023, 3, 17], [2023, 3, 24], [2023, 3, 27], 
+               [2023, 3, 28], [2023, 3, 29], [2023, 3, 30], [2023, 3, 31], [2023, 4, 7], [2023, 5, 1], 
+               [2023, 5, 29]]
 
     # Find how many days off we've had so far, yes it is chronological but lets not rely on that
     for i in range(0, len(daysOff)):
@@ -51,7 +48,7 @@ def getFreePeriod():
     # Or simply the number of school days modulo 7 corresponds to this pattern
     pattern = ["A", "E", "B", "F", "C", "G", "D"]
 
-    # start of school if we started on a sunday because the school is into masochism
+    # start of school if we started on a sunday :P
     # add 3 days so that wednesday - friday of the first week of school are included
     firstSunday = date(2022, 9, 11)
     days = 3
@@ -68,7 +65,7 @@ def getFreePeriod():
     days += fullWeeks * 5
     days += dayOfWeek()
 
-    # seriously local variable takese precedence over function, bruh
+    # seriously local variable takese precedence over function, ?
     daysMissed = daysOff(year, month, day)
 
     schoolDays = (days - daysMissed) + 3

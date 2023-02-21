@@ -15,7 +15,7 @@ def getStudents(period):
         # creating a csv reader object
         csvreader = csv.reader(nameFile)
 
-        # extracting field names through first row,
+        # extracting field names through first row, 
         fields = next(csvreader)
 
         # extracting each data row one by one

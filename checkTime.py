@@ -15,7 +15,4 @@ CLOSE_TIME = time(23, 30)
 def checkTime():
     timeNow = TIMEZONE.localize(datetime.now()).time()
 
-    if timeNow == CLOSE_TIME:
-        return 3
-
     return (OPEN_TIME <= timeNow) and (timeNow <= CLOSE_TIME)
