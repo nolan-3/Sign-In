@@ -3,6 +3,7 @@ import ssl
 from email.message import EmailMessage
 import time
 from getFreePeriod import getFreePeriod
+from password import password
 # given a list of students, sends that list to a specified email address.
 
 def send(students):
@@ -12,7 +13,7 @@ def send(students):
     smtp_server = "smtp.gmail.com"
     sender_email = "haverfordsignin@gmail.com"  # Enter your address
     receiver_email = "nolamccl@haverford.org"  # Enter receiver address
-    password = "xndbajmzcwgalbwo"
+    password = password
 
     content = ''
     for student in students:

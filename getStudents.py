@@ -2,12 +2,12 @@ import csv
 # Returns the list of students who have the given free period first
 
 class Student:
-    def __init__(self, name, grade):
-        self.name = name
+    def __init__(self, grade, signedIn = False):
         self.grade = grade
+        self.signedIn = signedIn
 
 def getStudents(period):
-    students = []
+    students = {}
     nameIndex = 1
     gradeIndex = 2
     periodIndex = 3
@@ -24,5 +24,5 @@ def getStudents(period):
             if free == period:
                 name = row[nameIndex]
                 grade = row[gradeIndex]
-                students.append(Student(name, grade))
+                students[name] = Student(grade)
     return students

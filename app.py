@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
-import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
 from getStudents import getStudents
 from checkTime import checkTime
 from getFreePeriod import getFreePeriod
 from send import send
+from threading import Timer
 
 
 app = Flask(__name__, static_url_path='', static_folder='static',)
@@ -44,7 +44,7 @@ def register(student):
         return False
 
     try:
-        daily.students.remove(student)
+        daily.students[student].signedIn = True
         return True
     except:
         return False
@@ -62,10 +62,12 @@ def home():
     check = checkTime()
     if check == True:
         if daily.studentsGotten == True:
-            return render_template("open.html", students=daily.students)
+            names = [name for name in daily.students if daily.students[name].signedIn == False]
+            return render_template("open.html", names=names)
         else:
             open()
-            return render_template("open.html", students=daily.students)
+            
+            return render_template("open.html", names=names)
 
     elif check == False:
         return render_template("closed.html")
