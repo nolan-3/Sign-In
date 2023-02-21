@@ -7,7 +7,7 @@ from pytz import timezone
 TIMEZONE = timezone("US/Eastern")
 
 OPEN_TIME = time(7, 0)
-CLOSE_TIME = time(9, 30)
+CLOSE_TIME = time(23, 30)
 
 # TODO(braid): Remove special close condition
 # open = True; closed = False; closing time = 3;

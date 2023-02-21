@@ -1,0 +1,11 @@
+
+# Braid TODO/Suggestions
+[ ] Separate logic into extended info class "StudentRegister"
+[ ] Simplify `home()` logic
+[ ] Add timer for reset and email send
+[ ] Add writing to file to email send code
+[ ] Make sure we store unique students (is name enough? is name + grade enough?)
+[ ] Remove on-close logic
+[ ] Don't expose email password
+[ ] School schedule could also be input in a csv file?
+[ ] Add logging

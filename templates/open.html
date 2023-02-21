@@ -18,8 +18,8 @@
             <select style="width: 300px; height: 50px" name="student" id="student">
                 <option></option>
 
-                {%for i in range(0, len)%}
-                <option value="{{ students[i][0] }}"> {{ students[i][0] }}</option>
+                {% for student in students %}
+                <option value="{{ student.name }}"> {{ student.name }} </option>
                 {% endfor %}
 
             </select>
@@ -63,7 +63,7 @@
 
 <script>
 
-  
+
 
 document.querySelector('#myForm').addEventListener('submit', function(e){
     e.preventDefault();
@@ -87,10 +87,9 @@ document.querySelector('#myForm').addEventListener('submit', function(e){
 })
 
 
-  </script>
+</script>
 
 <style>
-   
     .container {
         display: flex;
         justify-content: center;
