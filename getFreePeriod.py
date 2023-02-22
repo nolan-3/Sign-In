@@ -2,7 +2,6 @@ from datetime import date
 import time
 import math
 
-
 def daysOff(year, month, day):
     happyDays = 0
     # format [year,month,day]
