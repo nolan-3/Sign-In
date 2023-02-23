@@ -64,7 +64,7 @@ def getFreePeriod():
     days += fullWeeks * 5
     days += dayOfWeek()
 
-    # seriously local variable takese precedence over function, ?
+    # local variable takes precedence over function?
     daysMissed = daysOff(year, month, day)
 
     schoolDays = (days - daysMissed) + 3

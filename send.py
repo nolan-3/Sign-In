@@ -15,7 +15,7 @@ def send(students):
     receiver_email = "nolamccl@haverford.org"  # Enter receiver address
     password = p
 
-    content = 'Name Grade'
+    content = 'Name Grade \n'
     names = [name for name in students]
     for name in names:
         content += name + " " + students[name].grade + '\n'
@@ -26,7 +26,7 @@ def send(students):
 
     msg = EmailMessage()
     msg.set_content(content)
-    tagLine = "Students Who Didn't Sign In " + dayOfWeek + " " + month + " " + day + " " + freePeriod + " period"
+    tagLine = "Students Who Didn't Sign In " + dayOfWeek + " " + month + " " + day + " " + freePeriod + " Period"
     msg['Subject'] = tagLine
     msg['From'] = sender_email
     msg['To'] = receiver_email

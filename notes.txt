@@ -1,10 +1,9 @@
 
 # Braid TODO/Suggestions
-[ ] Separate logic into extended info class "StudentRegister"
-[ ] Simplify `home()` logic
-[ ] Add timer for reset and email send
+[?] Separate logic into extended info class "StudentRegister" 
 [ ] Add writing to file to email send code
-[ ] Remove on-close logic
-[ ] Don't expose email password
-[ ] School schedule could also be input in a csv file?
 [ ] Add logging
+# Nolan TODO
+[ ] change how names are displayed 
+    current: Last Name, First Name, (Preferred Name)
+    ideal: First Name Last Name ?

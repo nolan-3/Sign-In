@@ -36,7 +36,6 @@ def close():
     send(daily.students)
     daily.emailSent = True
     daily.studentsGotten = False
-    print("CLOSE RUNS!")
 
 # Attempt to register a student
 def register(student):
@@ -52,7 +51,7 @@ def register(student):
 
 #schedule the close function to run at 9:30
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=close, trigger='cron', hour = 18, second = '*')
+scheduler.add_job(func=close, trigger='cron', hour = 9, minute = 30)
 scheduler.start()
 
 
