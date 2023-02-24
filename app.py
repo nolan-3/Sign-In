@@ -18,12 +18,14 @@ class info:
     emailSent = False
     studentsGotten = True
 
+
 daily = info()
 
 
 # Shut down the scheduler when exiting the app
-#HMM DO I WANT THIS?
+# HMM DO I WANT THIS?
 atexit.register(lambda: scheduler.shutdown())
+
 
 def open():
     daily.freePeriod = getFreePeriod()
@@ -38,6 +40,8 @@ def close():
     daily.studentsGotten = False
 
 # Attempt to register a student
+
+
 def register(student):
     if checkTime() != True:
         return False
@@ -47,11 +51,11 @@ def register(student):
         return True
     except:
         return False
-    
 
-#schedule the close function to run at 9:30
+
+# schedule the close function to run at 9:30
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=close, trigger='cron', hour = 9, minute = 30)
+scheduler.add_job(func=close, trigger='cron', hour=9, minute=30)
 scheduler.start()
 
 
@@ -66,9 +70,10 @@ def home():
     check = checkTime()
     if check == True:
         if daily.studentsGotten == True:
-            names = [name for name in daily.students if daily.students[name].signedIn == False]
+            names = [
+                name for name in daily.students if daily.students[name].signedIn == False]
             return render_template("open.html", names=names)
-        #only runs if the program is running for multiple days straight, open is called initially at the start of the program
+        # only runs if the program is running for multiple days straight, open is called initially at the start of the program
         else:
             open()
             return render_template("open.html", names=names)
