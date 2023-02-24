@@ -1,80 +1,102 @@
 from flask import Flask, render_template, request
 from apscheduler.schedulers.background import BackgroundScheduler
 from getStudents import getStudents
-from checkTime import checkTime
+from datetime import datetime, time
+from pytz import timezone
 from getFreePeriod import getFreePeriod
 from send import send
-import atexit
 
+# All times are localized and interpreted in this timezone.
+TIMEZONE = timezone("US/Eastern")
+
+OPEN_TIME = time(7, 0)
+CLOSE_TIME = time(9, 30)
+
+# Manage the school schedule, and keep track of registered students
+class RegistrationManager():
+    # All times are localized and interpreted in this timezone.
+
+    # Constructor
+    def __init__(self):
+        # Setup recurring events to send mail, and refresh the student list
+        self.cron = BackgroundScheduler()
+        self.cron.add_job(func=lambda: self.sendMail(),
+                          trigger='cron',
+                          hour=OPEN_TIME.hour,
+                          minute=OPEN_TIME.minute,
+                          timezone=TIMEZONE)
+        self.cron.add_job(func=lambda: self.refreshStudents(),
+                          trigger='cron',
+                          hour=CLOSE_TIME.hour,
+                          minute=CLOSE_TIME.minute,
+                          timezone=TIMEZONE)
+        self.cron.start()
+
+        # Always refresh on startup
+        self.refreshStudents()
+
+    # Destructor
+    def __del__(self):
+        # Shut down the recurring events when finished
+        self.cron.shutdown()
+
+    # Properties
+    # =========================
+    # Check whether registration is currently open
+    def isOpen(self):
+        timeNow = datetime.now(TIMEZONE).time()
+        return (OPEN_TIME <= timeNow) and (timeNow <= CLOSE_TIME)
+
+    # Get the names of all currently unregistered students
+
+    def unregisteredStudents(self):
+        return [name for name in self.students if self.students[name].signedIn == False]
+
+    # Actions
+    # =========================
+    # Refresh the list of students for the current day
+    def refreshStudents(self):
+        print("Refreshing student list.")
+        self.freePeriod = getFreePeriod()
+        self.students = getStudents(self.freePeriod)
+
+    # Send mail containing the list of unregistered students
+    def sendMail(self):
+        print("Sending mail.")
+        send(self.unregisteredStudents())
+
+    # Attempt to register a student name, returns false if there's an error
+    def register(self, student):
+        if not self.isOpen():
+            return "Error: Registration is not open."
+
+        if student not in self.students:
+            return "Error: Student not found."
+
+        if self.students[student].signedIn:
+            return "Warning: Student already signed in."
+
+        self.students[student].signedIn = True
+        return "Ok."
+
+
+registration = RegistrationManager()
 
 app = Flask(__name__, static_url_path='', static_folder='static',)
-
-
-# store the data of each day in an object
-class info:
-    freePeriod = getFreePeriod()
-    students = getStudents(freePeriod)
-    # it isn't actually necessary to have both
-    emailSent = False
-    studentsGotten = True
-
-daily = info()
-
-
-# Shut down the scheduler when exiting the app
-#HMM DO I WANT THIS?
-atexit.register(lambda: scheduler.shutdown())
-
-def open():
-    daily.freePeriod = getFreePeriod()
-    daily.students = getStudents(daily.freePeriod)
-    daily.emailSent = False
-    daily.studentsGotten = True
-
-
-def close():
-    send(daily.students)
-    daily.emailSent = True
-    daily.studentsGotten = False
-
-# Attempt to register a student
-def register(student):
-    if checkTime() != True:
-        return False
-
-    try:
-        daily.students[student].signedIn = True
-        return True
-    except:
-        return False
-    
-
-#schedule the close function to run at 9:30
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=close, trigger='cron', hour = 9, minute = 30)
-scheduler.start()
-
 
 @app.route('/', methods=["GET", "POST"])
 def home():
     # If this is a form submission, attempt to register the student
     if request.method == "POST":
-        register(request.form["student"])
+        student = request.form["student"]
+        print(f"Registering '{student}': {registration.register(student)}")
 
     # if the time is between 7:00 and 9:30 return active page, if time is outside 7:00 - 9:30 return the inactive page
     # store the students who login between 7:00 and 9:30 and send an email at 9:30 with the list
-    check = checkTime()
-    if check == True:
-        if daily.studentsGotten == True:
-            names = [name for name in daily.students if daily.students[name].signedIn == False]
-            return render_template("open.html", names=names)
-        #only runs if the program is running for multiple days straight, open is called initially at the start of the program
-        else:
-            open()
-            return render_template("open.html", names=names)
+    if registration.isOpen():
+        return render_template("open.html", names=registration.unregisteredStudents())
 
-    elif check == False:
-        return render_template("closed.html")
+    return render_template("closed.html")
 
 
 if __name__ == '__main__':
