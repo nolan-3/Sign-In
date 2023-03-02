@@ -121,4 +121,3 @@ def sendStudents(students):
             server.send_message(msg, from_addr=sender_email,
                                 to_addrs=receiver_email)
             
-send(getStudents("B"))
