@@ -66,10 +66,12 @@ def sendGrades(students):
         receiver_email = dean  # Enter receiver address
         password = p
 
-        content = 'Form Deans Name Grade \n' + target
+        content = 'Missing Students from Form ' + target
+
         names = [name for name in students if students[name].grade == target]
         for name in names:
-            content += name + " " + students[name].grade + '\n'
+            content += name + '\n'
+
         freePeriod = getFreePeriod()
         month = time.strftime("%B")
         day = str(int(time.strftime("%d")))
@@ -101,7 +103,7 @@ def sendStudents(students):
         receiver_email = email  # Enter receiver address
         password = p
 
-        content = name +  + '\n' + "you didn't sign in first period today"
+        content = name + '\n' + "you didn't sign in first period today"
         
         freePeriod = getFreePeriod()
         month = time.strftime("%B")
@@ -120,4 +122,3 @@ def sendStudents(students):
             server.login(sender_email, password)
             server.send_message(msg, from_addr=sender_email,
                                 to_addrs=receiver_email)
-            

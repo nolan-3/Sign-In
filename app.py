@@ -1,21 +1,23 @@
 from flask import Flask, render_template, request
 from apscheduler.schedulers.background import BackgroundScheduler
 from getStudents import getStudents
-from datetime import datetime, time
+#from datetime import datetime, time
+import datetime
 from pytz import timezone
 from getFreePeriod import getFreePeriod
 from send import send
+import time
 
 # All times are localized and interpreted in this timezone.
 TIMEZONE = timezone("US/Eastern")
 
-OPEN_TIME = time(7, 0)
-close_time = time(9, 45)
+OPEN_TIME = datetime.time(7, 0)
+close_time = datetime.time(9, 45)
 
 def checkWednesday():
     dayOfWeek = time.strftime("%A")
     if dayOfWeek == "Wednesday":
-        close_time = time(10, 15)
+        close_time = datetime.time(10, 15)
 
 checkWednesday()
 
@@ -51,7 +53,7 @@ class RegistrationManager():
     # =========================
     # Check whether registration is currently open
     def isOpen(self):
-        timeNow = datetime.now(TIMEZONE).time()
+        timeNow = datetime.datetime.now(TIMEZONE).time()
         return (OPEN_TIME <= timeNow) and (timeNow <= close_time)
 
     # Get the names of all currently unregistered students
