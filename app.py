@@ -1,25 +1,23 @@
 from flask import Flask, render_template, request
 from apscheduler.schedulers.background import BackgroundScheduler
 from getStudents import getStudents
-#from datetime import datetime, time
-import datetime
 from pytz import timezone
 from getFreePeriod import getFreePeriod
 from send import send
+#from datetime import datetime, time
+import datetime
 import time
+
+def isWednesday():
+    dayOfWeek = time.strftime("%A")
+    return(dayOfWeek == "Wednesday")
 
 # All times are localized and interpreted in this timezone.
 TIMEZONE = timezone("US/Eastern")
 
 OPEN_TIME = datetime.time(7, 0)
-close_time = datetime.time(9, 45)
+CLOSE_TIME = datetime.time(9, 45)
 
-def checkWednesday():
-    dayOfWeek = time.strftime("%A")
-    if dayOfWeek == "Wednesday":
-        close_time = datetime.time(10, 15)
-
-checkWednesday()
 
 # Manage the school schedule, and keep track of registered students
 class RegistrationManager():
@@ -31,8 +29,8 @@ class RegistrationManager():
         self.cron = BackgroundScheduler()
         self.cron.add_job(func=lambda: self.sendMail(),
                           trigger='cron',
-                          hour=close_time.hour,
-                          minute=close_time.minute,
+                          hour=CLOSE_TIME.hour,
+                          minute=CLOSE_TIME.minute,
                           timezone=TIMEZONE)
         self.cron.add_job(func=lambda: self.refreshStudents(),
                           trigger='cron',
@@ -54,7 +52,11 @@ class RegistrationManager():
     # Check whether registration is currently open
     def isOpen(self):
         timeNow = datetime.datetime.now(TIMEZONE).time()
-        return (OPEN_TIME <= timeNow) and (timeNow <= close_time)
+        if isWednesday():
+            return (OPEN_TIME <= timeNow) and (timeNow <= datetime.time(10, 15))
+        else:
+            return (OPEN_TIME <= timeNow) and (timeNow <= CLOSE_TIME)
+    
 
     # Get the names of all currently unregistered students
     def unregisteredStudents(self):
