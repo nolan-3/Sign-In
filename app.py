@@ -10,7 +10,14 @@ from send import send
 TIMEZONE = timezone("US/Eastern")
 
 OPEN_TIME = time(7, 0)
-CLOSE_TIME = time(9, 30)
+close_time = time(9, 45)
+
+def checkWednesday():
+    dayOfWeek = time.strftime("%A")
+    if dayOfWeek == "Wednesday":
+        close_time = time(10, 15)
+
+checkWednesday()
 
 # Manage the school schedule, and keep track of registered students
 class RegistrationManager():
@@ -22,8 +29,8 @@ class RegistrationManager():
         self.cron = BackgroundScheduler()
         self.cron.add_job(func=lambda: self.sendMail(),
                           trigger='cron',
-                          hour=CLOSE_TIME.hour,
-                          minute=CLOSE_TIME.minute,
+                          hour=close_time.hour,
+                          minute=close_time.minute,
                           timezone=TIMEZONE)
         self.cron.add_job(func=lambda: self.refreshStudents(),
                           trigger='cron',
@@ -45,7 +52,7 @@ class RegistrationManager():
     # Check whether registration is currently open
     def isOpen(self):
         timeNow = datetime.now(TIMEZONE).time()
-        return (OPEN_TIME <= timeNow) and (timeNow <= CLOSE_TIME)
+        return (OPEN_TIME <= timeNow) and (timeNow <= close_time)
 
     # Get the names of all currently unregistered students
     def unregisteredStudents(self):
