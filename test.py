@@ -1,3 +1,3 @@
 import datetime
 
-print(datetime.datetime.now("America/New_York"))
+print(datetime.datetime.now(timezone("America/New_York")))
