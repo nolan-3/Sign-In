@@ -26,7 +26,7 @@ def sendAll(students):
     receiver_email = ["nolamccl@haverford.org","agreattofutaxpayer@gmail.com"]  # Enter receiver address
     password = p
 
-    content = 'Name Grade \n'
+    content = 'Name, Grade \n'
     names = [name for name in students]
     for name in names:
         content += name + " " + students[name].grade + '\n'

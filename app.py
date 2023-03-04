@@ -48,7 +48,8 @@ class RegistrationManager():
     # =========================
     # Check whether registration is currently open
     def isOpen(self):
-        timeNow = datetime.datetime.now(TIMEZONE).strftime("%A")
+        timeNow = datetime.datetime.now(TIMEZONE).time()
+        print(timeNow)
         if self.isWednesday():
             return (OPEN_TIME <= timeNow) and (timeNow <= datetime.time(10, 15))
         else:
