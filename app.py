@@ -87,8 +87,8 @@ class RegistrationManager():
         return "Ok"
     
     def isWednesday(self):
-    dayOfWeek = datetime.datetime.now(TIMEZONE).strftime("%A")
-    return(dayOfWeek == "Wednesday")
+        dayOfWeek = datetime.datetime.now(TIMEZONE).strftime("%A")
+        return(dayOfWeek == "Wednesday")
 
 
 registration = RegistrationManager()
