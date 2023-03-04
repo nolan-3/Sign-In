@@ -14,9 +14,6 @@ TIMEZONE = timezone("America/New_York")
 OPEN_TIME = datetime.time(7, 0)
 CLOSE_TIME = datetime.time(9, 45)
 
-def isWednesday():
-    dayOfWeek = time.strftime("%A")
-    return(dayOfWeek == "Wednesday")
 
 
 # Manage the school schedule, and keep track of registered students
@@ -51,7 +48,7 @@ class RegistrationManager():
     # =========================
     # Check whether registration is currently open
     def isOpen(self):
-        timeNow = datetime.datetime.now(TIMEZONE).time()
+        timeNow = datetime.datetime.now(TIMEZONE).strftime("%A")
         if isWednesday():
             return (OPEN_TIME <= timeNow) and (timeNow <= datetime.time(10, 15))
         else:
@@ -88,6 +85,10 @@ class RegistrationManager():
 
         self.students[student].signedIn = True
         return "Ok"
+    
+    def isWednesday(self):
+    dayOfWeek = datetime.datetime.now(TIMEZONE).strftime("%A")
+    return(dayOfWeek == "Wednesday")
 
 
 registration = RegistrationManager()
