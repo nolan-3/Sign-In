@@ -8,9 +8,13 @@ from getStudents import getStudents
 # given a list of students, sends that list to a specified email address.
 
 def send(students):
-    sendAll(students)
-    sendGrades(students)
-    sendStudents(students)
+    dayOfWeek = time.strftime("%A")
+    if dayOfWeek == "Saturday" or dayOfWeek == "Sunday":
+        return
+    else:
+        sendAll(students)
+        sendGrades(students)
+        sendStudents(students)
 
 
 def sendAll(students):
