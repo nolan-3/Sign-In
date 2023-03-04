@@ -8,15 +8,15 @@ from send import send
 import datetime
 import time
 
-def isWednesday():
-    dayOfWeek = time.strftime("%A")
-    return(dayOfWeek == "Wednesday")
-
 # All times are localized and interpreted in this timezone.
 TIMEZONE = timezone("US/Eastern")
 
 OPEN_TIME = datetime.time(7, 0)
 CLOSE_TIME = datetime.time(9, 45)
+
+def isWednesday():
+    dayOfWeek = time.strftime("%A")
+    return(dayOfWeek == "Wednesday")
 
 
 # Manage the school schedule, and keep track of registered students
