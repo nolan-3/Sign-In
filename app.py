@@ -9,7 +9,7 @@ import datetime
 import time
 
 # All times are localized and interpreted in this timezone.
-TIMEZONE = timezone("US/Eastern")
+TIMEZONE = timezone("America/New_York")
 
 OPEN_TIME = datetime.time(7, 0)
 CLOSE_TIME = datetime.time(9, 45)
