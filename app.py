@@ -8,6 +8,9 @@ from send import send
 import datetime
 from password import password
 
+
+app = Flask(__name__, static_url_path='', static_folder='static',)
+
 # All times are localized and interpreted in this timezone.
 TIMEZONE = timezone("America/New_York")
 
@@ -101,7 +104,6 @@ class RegistrationManager():
 
 registration = RegistrationManager()
 
-app = Flask(__name__, static_url_path='', static_folder='static',)
 
 
 
