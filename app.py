@@ -12,7 +12,7 @@ import time
 TIMEZONE = timezone("America/New_York")
 
 OPEN_TIME = datetime.time(7, 0)
-CLOSE_TIME = datetime.time(9, 45)
+CLOSE_TIME = datetime.time(23, 45)
 
 
 
