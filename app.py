@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from apscheduler.schedulers.background import BackgroundScheduler
 from getStudents import getStudents
 from pytz import timezone
@@ -6,14 +6,13 @@ from getFreePeriod import getFreePeriod
 from send import send
 #from datetime import datetime, time
 import datetime
-import time
+from password import password
 
 # All times are localized and interpreted in this timezone.
 TIMEZONE = timezone("America/New_York")
 
 OPEN_TIME = datetime.time(7, 0)
 CLOSE_TIME = datetime.time(23, 45)
-
 
 
 # Manage the school schedule, and keep track of registered students
@@ -38,12 +37,21 @@ class RegistrationManager():
 
         # Always refresh on startup
         self.refreshStudents()
-
+        
     # Destructor
     def __del__(self):
         # Shut down the recurring events when finished
         self.cron.shutdown()
 
+    # Require a login to prevent outside users
+    loggedIn = False
+
+    def checkLogin(self, guess):
+        if guess == password:
+            registration.loggedIn = True
+            return True
+        else:
+            return False
     # Properties
     # =========================
     # Check whether registration is currently open
@@ -95,8 +103,27 @@ registration = RegistrationManager()
 
 app = Flask(__name__, static_url_path='', static_folder='static',)
 
+
+
+@app.route('/login', methods=["GET","POST"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+    
+    elif request.method == "POST":
+        guess = request.form.get("guess")
+        if registration.checkLogin(guess):
+            return redirect("/")
+        else:
+            return render_template("login.html")
+        
+
+
 @app.route('/', methods=["GET", "POST"])
 def home():
+    if not registration.loggedIn:
+        return redirect("/login")
+        
     # If this is a form submission, attempt to register the student
     if request.method == "POST":
         student = request.form["student"]
