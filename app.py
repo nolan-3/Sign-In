@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from apscheduler.schedulers.background import BackgroundScheduler
+#from apscheduler.schedulers.background import BackgroundScheduler
 from getStudents import getStudents
 from pytz import timezone
 from getFreePeriod import getFreePeriod
@@ -38,18 +38,18 @@ class RegistrationManager():
         #                   timezone=TIMEZONE)
         # self.cron.start()
     # Setup recurring events to send mail, and refresh the student list
-            
+
 
 
         # Always refresh on startup
         self.refreshStudents()
-        
+
     # Destructor
     def __del__(self):
         # Shut down the recurring events when finished
         self.cron.shutdown()
-    
-    
+
+
     # Require a login to prevent outside users
     loggedIn = False
 
@@ -68,7 +68,7 @@ class RegistrationManager():
             return (OPEN_TIME <= timeNow) and (timeNow <= datetime.time(10, 15))
         else:
             return (OPEN_TIME <= timeNow) and (timeNow <= CLOSE_TIME)
-    
+
 
     # Get the names of all currently unregistered students
     def unregisteredStudents(self):
@@ -100,11 +100,11 @@ class RegistrationManager():
 
         self.students[student].signedIn = True
         return "Ok"
-    
+
     def isWednesday(self):
         dayOfWeek = datetime.datetime.now(TIMEZONE).strftime("%A")
         return(dayOfWeek == "Wednesday")
-    
+
     #####SET TIMERS FOR OPEN AND CLOSING TASKS
     def awaitOpen(self):
         timeNow = datetime.datetime.now(TIMEZONE).time()
@@ -112,14 +112,16 @@ class RegistrationManager():
         deltaM = timeNow.minute - OPEN_TIME.minute
         deltaS = timeNow.second - OPEN_TIME.second
         seconds = deltaH*3600 + deltaM*60 + deltaS
-                
-        t = Timer(seconds, registration.refreshStudents)
-        t.start() 
+
+        t = Timer(seconds, self.refreshStudents)
+        t.start()
+        t2 = Timer(seconds+1, self.awaitClose)
+        t2.start()
 
 
     def awaitClose(self):
         timeNow = datetime.datetime.now(TIMEZONE).time()
-        if(registration.isWednesday()):
+        if(self.isWednesday()):
             WEDNESDAY_TIME = datetime.time(10, 15)
             deltaH = timeNow.hour - WEDNESDAY_TIME.hour
             deltaM = timeNow.minute - WEDNESDAY_TIME.minute
@@ -131,8 +133,10 @@ class RegistrationManager():
             deltaS = timeNow.second - CLOSE_TIME.second
             seconds = deltaH*3600 + deltaM*60 + deltaS
 
-        t = Timer(seconds, registration.sendMail)
-        t.start() 
+        t = Timer(seconds, self.sendMail)
+        t.start()
+        t2 = Timer(seconds+1, self.awaitOpen)
+        t2.start()
 
 
 registration = RegistrationManager()
@@ -144,21 +148,21 @@ registration = RegistrationManager()
 def login():
     if request.method == "GET":
         return render_template("login.html")
-    
+
     elif request.method == "POST":
         guess = request.form.get("guess")
         if registration.checkLogin(guess):
             return redirect("/")
         else:
             return render_template("login.html")
-        
+
 
 
 @app.route('/', methods=["GET", "POST"])
 def home():
     if not registration.loggedIn:
         return redirect("/login")
-        
+
     # If this is a form submission, attempt to register the student
     if request.method == "POST":
         student = request.form["student"]
