@@ -7,6 +7,7 @@ from send import send
 #from datetime import datetime, time
 import datetime
 from password import password
+from threading import Timer
 
 
 app = Flask(__name__, static_url_path='', static_folder='static',)
@@ -24,19 +25,21 @@ class RegistrationManager():
 
     # Constructor
     def __init__(self):
-        # Setup recurring events to send mail, and refresh the student list
-        self.cron = BackgroundScheduler()
-        self.cron.add_job(func=lambda: self.sendMail(),
-                          trigger='cron',
-                          hour=CLOSE_TIME.hour,
-                          minute=CLOSE_TIME.minute,
-                          timezone=TIMEZONE)
-        self.cron.add_job(func=lambda: self.refreshStudents(),
-                          trigger='cron',
-                          hour=OPEN_TIME.hour,
-                          minute=OPEN_TIME.minute,
-                          timezone=TIMEZONE)
-        self.cron.start()
+        # self.cron = BackgroundScheduler()
+        # self.cron.add_job(func=lambda: self.sendMail(),
+        #                   trigger='cron',
+        #                   hour=CLOSE_TIME.hour,
+        #                   minute=CLOSE_TIME.minute,
+        #                   timezone=TIMEZONE)
+        # self.cron.add_job(func=lambda: self.refreshStudents(),
+        #                   trigger='cron',
+        #                   hour=OPEN_TIME.hour,
+        #                   minute=OPEN_TIME.minute,
+        #                   timezone=TIMEZONE)
+        # self.cron.start()
+    # Setup recurring events to send mail, and refresh the student list
+            
+
 
         # Always refresh on startup
         self.refreshStudents()
@@ -45,7 +48,8 @@ class RegistrationManager():
     def __del__(self):
         # Shut down the recurring events when finished
         self.cron.shutdown()
-
+    
+    
     # Require a login to prevent outside users
     loggedIn = False
 
@@ -100,6 +104,35 @@ class RegistrationManager():
     def isWednesday(self):
         dayOfWeek = datetime.datetime.now(TIMEZONE).strftime("%A")
         return(dayOfWeek == "Wednesday")
+    
+    #####SET TIMERS FOR OPEN AND CLOSING TASKS
+    def awaitOpen(self):
+        timeNow = datetime.datetime.now(TIMEZONE).time()
+        deltaH = timeNow.hour - OPEN_TIME.hour
+        deltaM = timeNow.minute - OPEN_TIME.minute
+        deltaS = timeNow.second - OPEN_TIME.second
+        seconds = deltaH*3600 + deltaM*60 + deltaS
+                
+        t = Timer(seconds, registration.refreshStudents)
+        t.start() 
+
+
+    def awaitClose(self):
+        timeNow = datetime.datetime.now(TIMEZONE).time()
+        if(registration.isWednesday()):
+            WEDNESDAY_TIME = datetime.time(10, 15)
+            deltaH = timeNow.hour - WEDNESDAY_TIME.hour
+            deltaM = timeNow.minute - WEDNESDAY_TIME.minute
+            deltaS = timeNow.second - WEDNESDAY_TIME.second
+            seconds = deltaH*3600 + deltaM*60 + deltaS
+        else:
+            deltaH = timeNow.hour - CLOSE_TIME.hour
+            deltaM = timeNow.minute - CLOSE_TIME.minute
+            deltaS = timeNow.second - CLOSE_TIME.second
+            seconds = deltaH*3600 + deltaM*60 + deltaS
+
+        t = Timer(seconds, registration.sendMail)
+        t.start() 
 
 
 registration = RegistrationManager()
