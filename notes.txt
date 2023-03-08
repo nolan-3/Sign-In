@@ -1,9 +1,0 @@
-
-# Braid TODO/Suggestions
-[?] Separate logic into extended info class "StudentRegister" 
-[ ] Add writing to file to email send code
-[ ] Add logging
-# Nolan TODO
-[ ] change how names are displayed 
-    current: Last Name, First Name, (Preferred Name)
-    ideal: First Name Last Name ?
