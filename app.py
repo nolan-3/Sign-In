@@ -1,13 +1,13 @@
-from flask import Flask, render_template, request, redirect
-#from apscheduler.schedulers.background import BackgroundScheduler
+from flask import Flask, render_template, request, redirect, session
 from getStudents import getStudents
 from pytz import timezone
 from getFreePeriod import getFreePeriod
 from send import send
-#from datetime import datetime, time
 import datetime
 from password import password
 from threading import Timer
+from login import login_required
+from flask_session import Session
 
 
 app = Flask(__name__, static_url_path='', static_folder='static',)
@@ -16,8 +16,12 @@ app = Flask(__name__, static_url_path='', static_folder='static',)
 TIMEZONE = timezone("America/New_York")
 
 OPEN_TIME = datetime.time(7, 0)
-CLOSE_TIME = datetime.time(23, 45)
+CLOSE_TIME = datetime.time(9, 45)
 
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # Manage the school schedule, and keep track of registered students
 class RegistrationManager():
@@ -25,37 +29,30 @@ class RegistrationManager():
 
     # Constructor
     def __init__(self):
-        # self.cron = BackgroundScheduler()
-        # self.cron.add_job(func=lambda: self.sendMail(),
-        #                   trigger='cron',
-        #                   hour=CLOSE_TIME.hour,
-        #                   minute=CLOSE_TIME.minute,
-        #                   timezone=TIMEZONE)
-        # self.cron.add_job(func=lambda: self.refreshStudents(),
-        #                   trigger='cron',
-        #                   hour=OPEN_TIME.hour,
-        #                   minute=OPEN_TIME.minute,
-        #                   timezone=TIMEZONE)
-        # self.cron.start()
-    # Setup recurring events to send mail, and refresh the student list
-
-
 
         # Always refresh on startup
         self.refreshStudents()
 
+        # Setup recurring events to send mail, and refresh the student list
+        if self.isOpen():
+            self.awaitClose()
+        else:
+            self.awaitOpen()
     # Destructor
     def __del__(self):
         # Shut down the recurring events when finished
-        self.cron.shutdown()
+        #self.cron.shutdown()
+        None
 
 
     # Require a login to prevent outside users
     loggedIn = False
+    #set initial user id number
+    id = 0
 
     def checkLogin(self, guess):
         if guess == password:
-            registration.loggedIn = True
+            self.loggedIn = True
             return True
         else:
             return False
@@ -112,6 +109,7 @@ class RegistrationManager():
         deltaM = timeNow.minute - OPEN_TIME.minute
         deltaS = timeNow.second - OPEN_TIME.second
         seconds = deltaH*3600 + deltaM*60 + deltaS
+        seconds = abs(seconds)
 
         t = Timer(seconds, self.refreshStudents)
         t.start()
@@ -127,16 +125,19 @@ class RegistrationManager():
             deltaM = timeNow.minute - WEDNESDAY_TIME.minute
             deltaS = timeNow.second - WEDNESDAY_TIME.second
             seconds = deltaH*3600 + deltaM*60 + deltaS
+            seconds = abs(seconds)
         else:
             deltaH = timeNow.hour - CLOSE_TIME.hour
             deltaM = timeNow.minute - CLOSE_TIME.minute
             deltaS = timeNow.second - CLOSE_TIME.second
             seconds = deltaH*3600 + deltaM*60 + deltaS
+            seconds = abs(seconds)
 
         t = Timer(seconds, self.sendMail)
         t.start()
         t2 = Timer(seconds+1, self.awaitOpen)
         t2.start()
+
 
 
 registration = RegistrationManager()
@@ -146,19 +147,26 @@ registration = RegistrationManager()
 
 @app.route('/login', methods=["GET","POST"])
 def login():
+    session.clear()
+
     if request.method == "GET":
         return render_template("login.html")
 
     elif request.method == "POST":
         guess = request.form.get("guess")
         if registration.checkLogin(guess):
+            session["user_id"] = registration.id
+            registration.id += 1
+            print(session["user_id"])
             return redirect("/")
         else:
             return render_template("login.html")
 
 
 
+
 @app.route('/', methods=["GET", "POST"])
+@login_required
 def home():
     if not registration.loggedIn:
         return redirect("/login")
@@ -177,3 +185,5 @@ def home():
 
 if __name__ == '__main__':
     app.run(debug=False, port=8000)
+
+
