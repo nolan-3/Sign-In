@@ -89,14 +89,12 @@ class RegistrationManager():
     # =========================
     # Refresh the list of students for the current day
     def refreshStudents(self):
-        print("refreshStudents is called")
         print("Refreshing student list.")
         self.freePeriod = getFreePeriod()
         self.students = getStudents(self.freePeriod)
 
     # Send mail containing the list of unregistered students
     def sendMail(self):
-        print("sendMail is called")
         print("Sending mail.")
         send(self.unregisteredStudents())
 
@@ -118,53 +116,7 @@ class RegistrationManager():
         dayOfWeek = datetime.datetime.now(TIMEZONE).strftime("%A")
         return(dayOfWeek == "Wednesday")
 
-    #####SET TIMERS FOR OPEN AND CLOSING TASKS
-    # def awaitOpen(self):
-    #     print("awaitOpen is called")
-    #     timeNow = datetime.datetime.now(TIMEZONE).time()
-    #     deltaH = ((24 - timeNow.hour) + OPEN_TIME.hour) % 24
-    #     deltaM = OPEN_TIME.minute - timeNow.minute
-    #     deltaS = 0 - timeNow.second
-    #     seconds = deltaH*3600 + deltaM*60 + deltaS
-    #     #seconds = abs(seconds)
-    #     print("seconds until open:")
-    #     print(seconds)
-
-    #     t = Timer(seconds, self.refreshStudents)
-    #     t.start()
-    #     t2 = Timer(seconds+1, self.awaitClose)
-    #     t2.start()
-
-
-    # def awaitClose(self):
-    #     print("awaitClose is called")
-    #     timeNow = datetime.datetime.now(TIMEZONE).time()
-    #     if(self.isWednesday()):
-    #         WEDNESDAY_TIME = datetime.time(10, 15)
-    #         deltaH = WEDNESDAY_TIME.hour - timeNow.hour
-    #         deltaM = WEDNESDAY_TIME.minute - timeNow.minute
-    #         deltaS = 0 - timeNow.second
-    #         seconds = deltaH*3600 + deltaM*60 + deltaS
-    #         #seconds = abs(20)
-    #     else:
-    #         deltaH = CLOSE_TIME.hour - timeNow.hour
-    #         deltaM = CLOSE_TIME.minute - timeNow.minute
-    #         deltaS = 0 - timeNow.second
-    #         seconds = deltaH*3600 + deltaM*60 + deltaS
-    #         seconds = abs(20)
-    #         print("seconds until close:")
-    #         print(seconds)
-
-    #     t = Timer(seconds, self.sendMail)
-    #     t.start()
-    #     t2 = Timer(seconds+1, self.awaitOpen)
-    #     t2.start()
-
-
-
 registration = RegistrationManager()
-
-
 
 
 @app.route('/login', methods=["GET","POST"])
