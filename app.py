@@ -24,7 +24,6 @@ Session(app)
 
 # Manage the school schedule, and keep track of registered students
 class RegistrationManager():
-    # All times are localized and interpreted in this timezone.
 
     # Constructor
     def __init__(self):
