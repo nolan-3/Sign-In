@@ -5,7 +5,7 @@ from getFreePeriod import getFreePeriod
 from send import send
 import datetime
 from password import password
-from threading import Timer
+#from threading import Timer
 from login import login_required
 from flask_session import Session
 
@@ -35,9 +35,12 @@ class RegistrationManager():
 
         # Setup recurring events to send mail, and refresh the student list
         if self.isOpen():
-            self.awaitClose()
+            self.awaiting = "close"
+            #self.awaitClose()
         else:
-            self.awaitOpen()
+            #self.awaitOpen()
+            self.awaiting = "open"
+        print("constructor runs!")
     # Destructor
     def __del__(self):
         # Shut down the recurring events when finished
@@ -71,16 +74,31 @@ class RegistrationManager():
     def unregisteredStudents(self):
         return [name for name in self.students if self.students[name].signedIn == False]
 
+    # If the program just switched from open -> close or vice versa perform open/closing tasks
+    def checkChange(self):
+        if self.awaiting == "open":
+            if self.isOpen():
+                self.refreshStudents()
+                self.awaiting = "close"
+
+        elif self.awaiting == "close":
+            if not self.isOpen():
+                self.sendMail()
+                self.awaiting = "open"
+
+
     # Actions
     # =========================
     # Refresh the list of students for the current day
     def refreshStudents(self):
+        print("refreshStudents is called")
         print("Refreshing student list.")
         self.freePeriod = getFreePeriod()
         self.students = getStudents(self.freePeriod)
 
     # Send mail containing the list of unregistered students
     def sendMail(self):
+        print("sendMail is called")
         print("Sending mail.")
         send(self.unregisteredStudents())
 
@@ -103,40 +121,46 @@ class RegistrationManager():
         return(dayOfWeek == "Wednesday")
 
     #####SET TIMERS FOR OPEN AND CLOSING TASKS
-    def awaitOpen(self):
-        timeNow = datetime.datetime.now(TIMEZONE).time()
-        deltaH = timeNow.hour - OPEN_TIME.hour
-        deltaM = timeNow.minute - OPEN_TIME.minute
-        deltaS = timeNow.second - OPEN_TIME.second
-        seconds = deltaH*3600 + deltaM*60 + deltaS
-        seconds = abs(seconds)
+    # def awaitOpen(self):
+    #     print("awaitOpen is called")
+    #     timeNow = datetime.datetime.now(TIMEZONE).time()
+    #     deltaH = ((24 - timeNow.hour) + OPEN_TIME.hour) % 24
+    #     deltaM = OPEN_TIME.minute - timeNow.minute
+    #     deltaS = 0 - timeNow.second
+    #     seconds = deltaH*3600 + deltaM*60 + deltaS
+    #     #seconds = abs(seconds)
+    #     print("seconds until open:")
+    #     print(seconds)
 
-        t = Timer(seconds, self.refreshStudents)
-        t.start()
-        t2 = Timer(seconds+1, self.awaitClose)
-        t2.start()
+    #     t = Timer(seconds, self.refreshStudents)
+    #     t.start()
+    #     t2 = Timer(seconds+1, self.awaitClose)
+    #     t2.start()
 
 
-    def awaitClose(self):
-        timeNow = datetime.datetime.now(TIMEZONE).time()
-        if(self.isWednesday()):
-            WEDNESDAY_TIME = datetime.time(10, 15)
-            deltaH = timeNow.hour - WEDNESDAY_TIME.hour
-            deltaM = timeNow.minute - WEDNESDAY_TIME.minute
-            deltaS = timeNow.second - WEDNESDAY_TIME.second
-            seconds = deltaH*3600 + deltaM*60 + deltaS
-            seconds = abs(seconds)
-        else:
-            deltaH = timeNow.hour - CLOSE_TIME.hour
-            deltaM = timeNow.minute - CLOSE_TIME.minute
-            deltaS = timeNow.second - CLOSE_TIME.second
-            seconds = deltaH*3600 + deltaM*60 + deltaS
-            seconds = abs(seconds)
+    # def awaitClose(self):
+    #     print("awaitClose is called")
+    #     timeNow = datetime.datetime.now(TIMEZONE).time()
+    #     if(self.isWednesday()):
+    #         WEDNESDAY_TIME = datetime.time(10, 15)
+    #         deltaH = WEDNESDAY_TIME.hour - timeNow.hour
+    #         deltaM = WEDNESDAY_TIME.minute - timeNow.minute
+    #         deltaS = 0 - timeNow.second
+    #         seconds = deltaH*3600 + deltaM*60 + deltaS
+    #         #seconds = abs(20)
+    #     else:
+    #         deltaH = CLOSE_TIME.hour - timeNow.hour
+    #         deltaM = CLOSE_TIME.minute - timeNow.minute
+    #         deltaS = 0 - timeNow.second
+    #         seconds = deltaH*3600 + deltaM*60 + deltaS
+    #         seconds = abs(20)
+    #         print("seconds until close:")
+    #         print(seconds)
 
-        t = Timer(seconds, self.sendMail)
-        t.start()
-        t2 = Timer(seconds+1, self.awaitOpen)
-        t2.start()
+    #     t = Timer(seconds, self.sendMail)
+    #     t.start()
+    #     t2 = Timer(seconds+1, self.awaitOpen)
+    #     t2.start()
 
 
 
@@ -157,6 +181,7 @@ def login():
         if registration.checkLogin(guess):
             session["user_id"] = registration.id
             registration.id += 1
+            print("new user:")
             print(session["user_id"])
             return redirect("/")
         else:
@@ -168,6 +193,7 @@ def login():
 @app.route('/', methods=["GET", "POST"])
 @login_required
 def home():
+    registration.checkChange()
     if not registration.loggedIn:
         return redirect("/login")
 
