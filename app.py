@@ -5,7 +5,6 @@ from getFreePeriod import getFreePeriod
 from send import send
 import datetime
 from password import password
-#from threading import Timer
 from login import login_required
 from flask_session import Session
 
