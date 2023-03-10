@@ -357,7 +357,6 @@ YU031,"Yu, Owen ( Owen )",VI,G"""
 
     # extracting each data row one by one
     for row in csvreader:
-        print(row)
         free = row[periodIndex]
         if free == period:
             name = row[nameIndex]
@@ -365,4 +364,3 @@ YU031,"Yu, Owen ( Owen )",VI,G"""
             students[name] = Student(grade)
 
     return students
-print(getStudents("B"))
