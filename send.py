@@ -9,12 +9,12 @@ from getStudents import getStudents
 
 def send(students):
     dayOfWeek = time.strftime("%A")
-    if dayOfWeek == "Saturday" or dayOfWeek == "Sunday":
-        return
-    else:
-        sendAll(students)
-        sendGrades(students)
-        sendStudents(students)
+    #if dayOfWeek == "Saturday" or dayOfWeek == "Sunday":
+        #return
+    #else:
+    sendAll(students)
+    sendGrades(students)
+    sendStudents(students)
 
 
 def sendAll(students):
