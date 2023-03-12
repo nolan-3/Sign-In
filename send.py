@@ -70,7 +70,7 @@ def sendGrades(students):
         receiver_email = dean  # Enter receiver address
         password = p
 
-        content = 'Missing Students from Form ' + target
+        content = 'Missing Students from Form ' + target + '\n'
 
         names = [name for name in students if students[name].grade == target]
         for name in names:
@@ -94,39 +94,39 @@ def sendGrades(students):
             server.send_message(msg, from_addr=sender_email,
                                 to_addrs=receiver_email)
         
+        
 
 def sendStudents(students):
+    recipients = []
     names = [name for name in students]
-    for name in names:
+    #for name in names:
+        #recipients.append(students[name].email)
+    recipients.append("nolamccl@haverford.org")
+    recipients.append("agreattofutaxpayer@gmail.com")
+    print(f"sending emails to :{recipients}")
 
-        #################################### email = student.email
-        email = "nolamccl@haverford.org"
-        port = 465  # For SSL
-        smtp_server = "smtp.gmail.com"
-        sender_email = "haverfordsignin@gmail.com"  # Enter your address
-        receiver_email = email  # Enter receiver address
-        password = p
+    #email = "agreattofutaxpayer@gmail.com"
+    port = 465  # For SSL
+    smtp_server = "smtp.gmail.com"
+    sender_email = "haverfordsignin@gmail.com"  # Enter your address
+    #receiver_email = email  # Enter receiver address
+    password = p
+    content = "you didn't sign in first period today"
+    freePeriod = getFreePeriod()
+    month = time.strftime("%B")
+    day = str(int(time.strftime("%d")))
+    dayOfWeek = time.strftime("%A")
+    msg = EmailMessage()
+    msg.set_content(content)
+    tagLine = "You didn't sign in  " + dayOfWeek + " " + month + " " + day + " " + freePeriod + " Period"
+    msg['Subject'] = tagLine
+    msg['From'] = sender_email
+    msg["Bcc"] = recipients
 
-        content = name + '\n' + "you didn't sign in first period today"
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+        server.login(sender_email, password)
+        server.send_message(msg, from_addr=sender_email,
+                            to_addrs=recipients,)
         
-        freePeriod = getFreePeriod()
-        month = time.strftime("%B")
-        day = str(int(time.strftime("%d")))
-        dayOfWeek = time.strftime("%A")
-
-        msg = EmailMessage()
-        msg.set_content(content)
-        tagLine = "You didn't sign in  " + dayOfWeek + " " + month + " " + day + " " + freePeriod + " Period"
-        msg['Subject'] = tagLine
-        msg['From'] = sender_email
-        msg['To'] = receiver_email
-
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-            server.login(sender_email, password)
-            server.send_message(msg, from_addr=sender_email,
-                                to_addrs=receiver_email)
-
-students = getStudents("B")
-print(students["McCloskey, Nolan ( Nolan )"])
-print(students["McCloskey, Nolan ( Nolan )"].grade)
+send(getStudents("B"))
