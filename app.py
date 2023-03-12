@@ -15,7 +15,7 @@ app = Flask(__name__, static_url_path='', static_folder='static',)
 TIMEZONE = timezone("America/New_York")
 
 OPEN_TIME = datetime.time(7, 0)
-CLOSE_TIME = datetime.time(17, 15)
+CLOSE_TIME = datetime.time(17, 40)
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
