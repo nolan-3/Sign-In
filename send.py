@@ -7,17 +7,17 @@ from password import p
 from getStudents import getStudents
 # given a list of students, sends that list to a specified email address.
 
-def send(students):
+def send(students,unregisteredNames):
     dayOfWeek = time.strftime("%A")
     #if dayOfWeek == "Saturday" or dayOfWeek == "Sunday":
         #return
     #else:
-    sendAll(students)
-    sendGrades(students)
-    sendStudents(students)
+    sendAll(students,unregisteredNames)
+    sendGrades(students,unregisteredNames)
+    sendStudents(students,unregisteredNames)
 
 
-def sendAll(students):
+def sendAll(students,unregisteredNames):
 
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
@@ -27,8 +27,7 @@ def sendAll(students):
     password = p
 
     content = 'Name, Grade \n'
-    names = [name for name in students]
-    for name in names:
+    for name in unregisteredNames:
         content += name + " " + students[name].grade + '\n'
     freePeriod = getFreePeriod()
     month = time.strftime("%B")
@@ -48,7 +47,7 @@ def sendAll(students):
         server.send_message(msg, from_addr=sender_email,
                             to_addrs=receiver_email)
 
-def sendGrades(students):
+def sendGrades(students,unregisteredNames):
     for i in range(0,4):
     ################################### CHANGE TO FORM DEANS
         if i == 0:
@@ -72,8 +71,7 @@ def sendGrades(students):
 
         content = 'Missing Students from Form ' + target + '\n'
 
-        names = [name for name in students if students[name].grade == target]
-        for name in names:
+        for name in unregisteredNames:
             content += name + '\n'
 
         freePeriod = getFreePeriod()
@@ -96,10 +94,9 @@ def sendGrades(students):
         
         
 
-def sendStudents(students):
+def sendStudents(students,unregisteredNames):
     recipients = []
-    names = [name for name in students]
-    #for name in names:
+    #for name in unregisteredNames:
         #recipients.append(students[name].email)
     recipients.append("nolamccl@haverford.org")
     recipients.append("agreattofutaxpayer@gmail.com")

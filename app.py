@@ -71,8 +71,10 @@ class RegistrationManager():
 
 
     # Get the names of all currently unregistered students
-    def unregisteredStudents(self):
+    ## PROBLEM ##############################TODO#######################################################
+    def unregisteredNames(self):
         return [name for name in self.students if self.students[name].signedIn == False]
+    
 
     # If the program just switched from open -> close or vice versa perform open/closing tasks
     def checkChange(self):
@@ -98,7 +100,7 @@ class RegistrationManager():
     # Send mail containing the list of unregistered students
     def sendMail(self):
         print("Sending mail.")
-        send(self.unregisteredStudents())
+        send(self.students, self.unregisteredNames())
 
     # Attempt to register a student name, returns false if there's an error
     def register(self, student):
@@ -156,7 +158,7 @@ def home():
     # if the time is between 7:00 and 9:30 return active page, if time is outside 7:00 - 9:30 return the inactive page
     # store the students who login between 7:00 and 9:30 and send an email at 9:30 with the list
     if registration.isOpen():
-        return render_template("open.html", names=registration.unregisteredStudents())
+        return render_template("open.html", names=registration.unregisteredNames())
 
     return render_template("closed.html")
 
