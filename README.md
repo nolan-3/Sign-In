@@ -1,5 +1,5 @@
 # Sign-In
-Tracks which students with free period first actually are at school before 9:30.
+Tracks which students with free period first actually are at school before the end of first period.
 
 ## Setup
 This project is built and run using [Flask](https://flask.palletsprojects.com/).
