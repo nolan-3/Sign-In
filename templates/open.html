@@ -30,7 +30,7 @@
         <br>
         <img class="medium"
             src="https://instructure-uploads.s3.amazonaws.com/account_23930000000000001/attachments/63765/THS-Seal-2c.png?AWSAccessKeyId=AKIAJFNFXH2V2O7RPCAA&Expires=1938411768&Signature=ewaYhupFt3fbG4TPx5CTf%2BhmY7A%3D&response-cache-control=Cache-Control%3Amax-age%3D473364000.0%2C%20public&response-expires=473364000.0">
-        <h2 class="header" style="text-align:center">Check-in is open from 7:00 - 9:30</h2>
+        <h2 class="header" style="text-align:center">Check-in is open from 7:00 - end of first period</h2>
 
     </div>
 </body>
@@ -46,7 +46,10 @@
         if (date.getHours() === 7 && date.getMinutes() === 0) {
             location.reload()
         }
-        else if (date.getHours() === 9 && date.getMinutes() === 31) {
+        else if (date.getHours() === 9 && date.getMinutes() === 46) {
+            location.reload()
+        }
+        elif if (date.getHours() === 10 && date.getMinutes() === 16 {
             location.reload()
         }
     }, 60000); // Repeat every 60000 milliseconds (1 minute)
