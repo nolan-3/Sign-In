@@ -72,7 +72,8 @@ def sendGrades(students,unregisteredNames):
         content = 'Missing Students from Form ' + target + '\n'
 
         for name in unregisteredNames:
-            content += name + '\n'
+            if(students[name].grade == target):
+                content += name + '\n'
 
         freePeriod = getFreePeriod()
         month = time.strftime("%B")
@@ -96,10 +97,12 @@ def sendGrades(students,unregisteredNames):
 
 def sendStudents(students,unregisteredNames):
     recipients = []
+    recipients.append("haverfordsignin@gmail.com")
     #for name in unregisteredNames:
         #recipients.append(students[name].email)
     recipients.append("nolamccl@haverford.org")
     recipients.append("agreattofutaxpayer@gmail.com")
+
     print(f"sending emails to :{recipients}")
 
     #email = "agreattofutaxpayer@gmail.com"
