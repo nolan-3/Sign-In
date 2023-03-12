@@ -126,3 +126,7 @@ def sendStudents(students):
             server.login(sender_email, password)
             server.send_message(msg, from_addr=sender_email,
                                 to_addrs=receiver_email)
+
+students = getStudents("B")
+print(students["McCloskey, Nolan ( Nolan )"])
+print(students["McCloskey, Nolan ( Nolan )"].grade)
