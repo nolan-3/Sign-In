@@ -1,3 +1,5 @@
 # Byte-compiled modules
 __pycache__/
 notes.txt
+.gitpod.yml
+password.py
