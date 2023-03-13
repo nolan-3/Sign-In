@@ -2,11 +2,11 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 import time
-from getFreePeriod import getFreePeriod
-from password import p
+from school_schedule import free_period
+from password import email_password
 from getStudents import getStudents
-# given a list of students, sends that list to a specified email address.
 
+# given a list of students, sends that list to a specified email address.
 def send(students,unregisteredNames):
     dayOfWeek = time.strftime("%A")
     #if dayOfWeek == "Saturday" or dayOfWeek == "Sunday":
@@ -24,12 +24,11 @@ def sendAll(students,unregisteredNames):
     sender_email = "haverfordsignin@gmail.com"  # Enter your address
     #################################### CHANGE TO KOLADE
     receiver_email = ["nolamccl@haverford.org","agreattofutaxpayer@gmail.com"]  # Enter receiver address
-    password = p
 
     content = 'Name, Grade \n'
     for name in unregisteredNames:
         content += name + " " + students[name].grade + '\n'
-    freePeriod = getFreePeriod()
+    freePeriod = free_period()
     month = time.strftime("%B")
     day = str(int(time.strftime("%d")))
     dayOfWeek = time.strftime("%A")
@@ -43,7 +42,7 @@ def sendAll(students,unregisteredNames):
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-        server.login(sender_email, password)
+        server.login(sender_email, email_password)
         server.send_message(msg, from_addr=sender_email,
                             to_addrs=receiver_email)
 
@@ -67,7 +66,6 @@ def sendGrades(students,unregisteredNames):
         smtp_server = "smtp.gmail.com"
         sender_email = "haverfordsignin@gmail.com"  # Enter your address
         receiver_email = dean  # Enter receiver address
-        password = p
 
         content = 'Missing Students from Form ' + target + '\n'
 
@@ -89,7 +87,7 @@ def sendGrades(students,unregisteredNames):
 
         context = ssl.create_default_context()
         with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-            server.login(sender_email, password)
+            server.login(sender_email, email_password)
             server.send_message(msg, from_addr=sender_email,
                                 to_addrs=receiver_email)
         
@@ -110,7 +108,6 @@ def sendStudents(students,unregisteredNames):
     smtp_server = "smtp.gmail.com"
     sender_email = "haverfordsignin@gmail.com"  # Enter your address
     #receiver_email = email  # Enter receiver address
-    password = p
     content = "you didn't sign in first period today"
     freePeriod = getFreePeriod()
     month = time.strftime("%B")
@@ -125,6 +122,6 @@ def sendStudents(students,unregisteredNames):
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-        server.login(sender_email, password)
+        server.login(sender_email, email_password)
         server.send_message(msg, from_addr=sender_email,
                             to_addrs=recipients,)
