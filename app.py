@@ -1,21 +1,14 @@
-from flask import Flask, render_template, request, redirect, session
-from getStudents import getStudents
-from pytz import timezone
-from getFreePeriod import getFreePeriod
+from school_schedule import registration_open, free_period
 from send import send
-import datetime
-from password import password
+from password import server_password
 from login import login_required
+from getStudents import getStudents
+
+from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 
 
 app = Flask(__name__, static_url_path='', static_folder='static',)
-
-# All times are localized and interpreted in this timezone.
-TIMEZONE = timezone("America/New_York")
-
-OPEN_TIME = datetime.time(7, 0)
-CLOSE_TIME = datetime.time(9, 45)
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -52,7 +45,7 @@ class RegistrationManager():
     id = 0
 
     def checkLogin(self, guess):
-        if guess == password:
+        if guess == server_password:
             self.loggedIn = True
             return True
         else:
@@ -61,13 +54,7 @@ class RegistrationManager():
     # =========================
     # Check whether registration is currently open
     def isOpen(self):
-        timeNow = datetime.datetime.now(TIMEZONE).time()
-        print(f"Refreshed at: '{timeNow}'")
-
-        if self.isWednesday():
-            return (OPEN_TIME <= timeNow) and (timeNow <= datetime.time(10, 15))
-        else:
-            return (OPEN_TIME <= timeNow) and (timeNow <= CLOSE_TIME)
+        return registration_open()
 
 
     # Get the names of all currently unregistered students
@@ -94,7 +81,7 @@ class RegistrationManager():
     # Refresh the list of students for the current day
     def refreshStudents(self):
         print("Refreshing student list.")
-        self.freePeriod = getFreePeriod()
+        self.freePeriod = free_period()
         self.students = getStudents(self.freePeriod)
 
     # Send mail containing the list of unregistered students
@@ -115,10 +102,6 @@ class RegistrationManager():
 
         self.students[student].signedIn = True
         return "Ok"
-
-    def isWednesday(self):
-        dayOfWeek = datetime.datetime.now(TIMEZONE).strftime("%A")
-        return(dayOfWeek == "Wednesday")
 
 registration = RegistrationManager()
 
