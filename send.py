@@ -100,8 +100,6 @@ def sendStudents(students,unregisteredNames):
     recipients.append("haverfordsignin@gmail.com")
     #for name in unregisteredNames:
         #recipients.append(students[name].email)
-    recipients.append("nolamccl@haverford.org")
-    recipients.append("agreattofutaxpayer@gmail.com")
 
     print(f"sending emails to :{recipients}")
 
